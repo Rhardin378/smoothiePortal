@@ -4,8 +4,23 @@
   "description": "SmoothiePortal is a tool that helps Smoothie King employees efficiently find smoothies on the POS system and make better recommendations to provide better service times and provides managers with an easy-to-use system to keep track of inventory and truck orders.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jwt-simple": "^0.5.6",
+    "mongodb": "^6.8.0",
+    "mongoose": "^8.4.3",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.4",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0"
+  }
 }
