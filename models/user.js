@@ -9,7 +9,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const crypto = require("crypto");
-const { storeSchema } = require("./store");
+const storeSchema = require("./store");
 const TruckOrderSchema = require("./truckOrder");
 // const Movie = require("../models/movie");
 
