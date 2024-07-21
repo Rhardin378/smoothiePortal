@@ -16,7 +16,7 @@ const storeSchema = new Schema({
 });
 const Store = mongoose.model("store", storeSchema);
 
-module.exports = { Store, storeSchema: storeSchema };
+module.exports = { Store, storeSchema };
 
 // store: {
 //   storeNumber: 1937,

@@ -11,6 +11,8 @@ const MONGODB_URI = process.env.MONGODB_URI;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+router(app);
+
 mongoose
   .connect(MONGODB_URI, {
     useNewUrlParser: true,

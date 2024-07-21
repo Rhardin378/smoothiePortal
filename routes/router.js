@@ -1,5 +1,10 @@
 // Store routes
+const express = require("express");
+const storeRouter = require("../routes/storeRouter");
 
+module.exports = function (app) {
+  app.use("/api/", storeRouter);
+};
 // POST /stores - Create a store
 // POST /stores/:storeId/products - Create a product and add to a store's inventory
 // GET /stores - Get all stores (for populating a dropdown on the frontend)

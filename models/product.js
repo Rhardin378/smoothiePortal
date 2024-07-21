@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const store = require("./store");
+const Store = require("./store");
 
 const productSchema = new Schema({
   name: {
@@ -21,7 +21,7 @@ const productSchema = new Schema({
     type: Date,
     required: true,
   },
-  store: { type: store.storeSchema, required: true },
+  store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
 });
 
 const Product = mongoose.model("Product", productSchema);
