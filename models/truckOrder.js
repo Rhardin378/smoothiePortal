@@ -10,7 +10,7 @@ const TruckOrderSchema = new Schema({
 
 const TruckOrder = mongoose.model("TruckOrder", truckOrderSchema);
 
-module.exports = { TruckOrder, TruckOrderSchema: TruckOrderSchema };
+module.exports = { TruckOrder, TruckOrderSchema };
 
 // truck order:{
 //   id: "3429fa",

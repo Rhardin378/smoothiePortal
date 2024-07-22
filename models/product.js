@@ -26,7 +26,7 @@ const productSchema = new Schema({
 
 const Product = mongoose.model("Product", productSchema);
 
-module.exports = { Product, productSchema: productSchema };
+module.exports = { Product, productSchema };
 
 // product: {
 //   id: "3429fa",

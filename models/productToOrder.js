@@ -11,4 +11,4 @@ const productToOrderSchema = new Schema({
 
 const ProductToOrder = mongoose.model("ProductToOrder", productToOrderSchema);
 
-module.exports = { ProductToOrder, productToOrderSchema: productToOrderSchema };
+module.exports = { ProductToOrder, productToOrderSchema };
