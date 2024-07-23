@@ -20,7 +20,14 @@ router.post("/stores/:storeId/products", storeController.addProductToInventory);
 
 router.get("/stores", storeController.getAllStores);
 // GET /stores/:storeId/inventory - Get a store's inventory
+router.get("/stores/:storeId/inventory", storeController.getInventory);
 // PUT /stores/:storeId/inventory/:productId - Update a product in a store's inventory
+
+router.put(
+  "/stores/:storeId/inventory/:productId",
+  storeController.editProduct
+);
+
 // DELETE /stores/:storeId/inventory/:productId - Remove a product from a store's inventory
 
 module.exports = router;
