@@ -30,4 +30,9 @@ router.put(
 
 // DELETE /stores/:storeId/inventory/:productId - Remove a product from a store's inventory
 
+router.delete(
+  "/stores/:storeId/inventory/:productId",
+  storeController.deleteProduct
+);
+
 module.exports = router;

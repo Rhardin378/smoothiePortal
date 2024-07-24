@@ -1,6 +1,8 @@
 const Store = require("../models/store");
 const Product = require("../models/product");
 
+//still need route to get all products from inventory and map into productsToOrder documents
+
 exports.createStore = async (req, res, next) => {
   try {
     const { storeNumber, address, truckOrderDay, inventory } = req.body;
@@ -14,7 +16,6 @@ exports.createStore = async (req, res, next) => {
     await store.save();
     res.send(store);
     console.log(store);
-    res.end();
   } catch (err) {
     console.error(err);
   }
@@ -54,7 +55,7 @@ exports.addProductToInventory = async (req, res, next) => {
 
       store.inventory.push(product);
 
-      store.save();
+      await store.save();
       res.status(201).send(product);
     }
     console.log(store);
@@ -111,4 +112,34 @@ exports.editProduct = async (req, res, next) => {
     console.error(err);
     res.status(500).send({ message: "Internal Server Error" });
   }
+};
+
+exports.deleteProduct = async (req, res, next) => {
+  // find store
+
+  try {
+    const storeId = req.params.storeId;
+    const productId = req.params.productId;
+
+    const store = await Store.Store.findById(storeId);
+
+    //remove from array and delete
+
+    if (store) {
+      store.inventory = store.inventory.filter(
+        (product) => product._id.toString() !== productId
+      );
+    } else {
+      res.status(404).json({ message: "Store not found" });
+    }
+    await Product.Product.deleteOne({ _id: productId });
+    await store.save();
+
+    res.status(200).json({ message: "Product deleted sucessfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+
+  // find product within the invenotry
 };
