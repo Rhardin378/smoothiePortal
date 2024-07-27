@@ -8,13 +8,23 @@ const storeSchema = new Schema({
     required: true,
   },
   address: {
-    type: String,
-    required: true,
+    street: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
   },
   truckOrderDay: { type: String, required: true },
   inventory: [{ type: product.productSchema }],
 });
-const Store = mongoose.model("store", storeSchema);
+const Store = mongoose.model("Store", storeSchema);
 
 module.exports = { Store, storeSchema };
 

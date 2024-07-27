@@ -4,7 +4,7 @@ const product = require("./product");
 
 const productToOrderSchema = new Schema({
   name: { type: String, required: true },
-  product: { type: product.productSchema },
+  product: { type: Schema.Types.ObjectId, ref: "product" },
   count: { type: Number, required: true },
   lastUpdated: Date,
 });

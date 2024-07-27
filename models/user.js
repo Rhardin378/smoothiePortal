@@ -19,9 +19,8 @@ const UserSchema = new Schema({
   email: { type: String, unique: true, lowercase: true },
   hash: String,
   salt: String,
-  // everything in the watchlist is expected to folow the movieSchema
   role: String,
-  store: { type: storeSchema, required: true },
+  store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
   truckOrders: [{ type: TruckOrderSchema.TruckOrderSchema }],
 });
 
@@ -42,4 +41,4 @@ UserSchema.methods.validPassword = function (password) {
 
 const UserModel = mongoose.model("user", UserSchema);
 
-module.exports = { UserModel, UserSchema: UserSchema };
+module.exports = { UserModel, UserSchema };

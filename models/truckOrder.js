@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const UserSchema = require("./user");
+const { UserSchema } = require("./user");
 
 const TruckOrderSchema = new Schema({
   date: Date,
-  user: { type: UserSchema.UserSchema },
+  user: { type: Schema.Types.ObjectId, ref: "user" },
   purchaseOrder: [],
 });
 
-const TruckOrder = mongoose.model("TruckOrder", truckOrderSchema);
+const TruckOrder = mongoose.model("TruckOrder", TruckOrderSchema);
 
 module.exports = { TruckOrder, TruckOrderSchema };
 
