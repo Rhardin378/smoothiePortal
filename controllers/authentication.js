@@ -19,18 +19,20 @@ exports.signin = (req, res) => {
   res.send({ email: req.user.email, token: tokenForUser(req.user) });
 };
 
-exports.currentUser = (req, res) => {
-  const user = {
-    email: req.user.email,
-    token: tokenForUser(req.user),
-    name: req.user.name,
-    role: req.user.role,
-    store: req.user.store,
-    truckOrders: req.user.truckOrders,
-  };
-  res.send(user);
-};
+exports.currentUser = async (req, res) => {
+  const user = await UserModel.findById(req.user._id).populate("store"); // Populate the store field
 
+  const userDetails = {
+    email: user.email,
+    token: tokenForUser(user),
+    name: user.name,
+    role: user.role,
+    store: user.store, // Populated store details
+    truckOrders: user.truckOrders,
+  };
+
+  res.send(userDetails);
+};
 exports.signup = async (req, res, next) => {
   const { email, password, name, store } = req.body;
   console.log(req.body);

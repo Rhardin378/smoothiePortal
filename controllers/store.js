@@ -49,7 +49,7 @@ exports.addProductToInventory = async (req, res, next) => {
         inStock,
         units,
         lastUpdated: new Date(),
-        store,
+        store: store._id,
       });
       await product.save();
 
@@ -68,13 +68,28 @@ exports.addProductToInventory = async (req, res, next) => {
 exports.getInventory = async (req, res, next) => {
   try {
     const storeId = req.params.storeId;
+    const { category, productName } = req.query;
     const store = await Store.Store.findById(storeId);
+
+    const query = { store: storeId };
 
     if (!store) {
       return res.status(404).send({ message: "Store not found" });
     }
 
-    res.status(200).send({ inventory: store.inventory });
+    if (category) {
+      query.category = category;
+    }
+    if (productName) {
+      query.name = { $regex: new RegExp(productName, "i") };
+    }
+
+    const filteredInventory = await Product.Product.find(query);
+
+    console.log(category);
+    console.log(productName);
+    console.log(filteredInventory);
+    res.status(200).send({ inventory: filteredInventory });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "Internal Server Error" });
@@ -142,4 +157,6 @@ exports.deleteProduct = async (req, res, next) => {
   }
 
   // find product within the invenotry
+  //sort by category
+  //search by name
 };

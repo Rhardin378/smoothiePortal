@@ -5,7 +5,6 @@ const storeController = require("../controllers/store");
 // Store routes
 
 // const Authentication = require('./controllers/authentication');
-// const WatchList = require('./controllers/watchList');
 // const passport = require('passport');
 
 // const requireAuth = passport.authenticate('jwt', { session: false });
