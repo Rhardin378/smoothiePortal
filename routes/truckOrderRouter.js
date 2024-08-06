@@ -19,12 +19,9 @@ const isManager = (req, res, next) => {
 // POST /truckOrders - Create a truck order
 router.post(
   "/stores/:storeId/truckOrders",
+  requireAuth,
   truckOrderController.createTruckOrder
 );
-
-// find inventory and map over them
-
-//will prepopulate based on a user's store's inventory
 
 // POST /truckOrders/:truckOrderId/productsToOrder - Create a productToOrder and add to a truck order (if you want to add a new item not in inventory)
 

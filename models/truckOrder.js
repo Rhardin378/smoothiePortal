@@ -5,7 +5,7 @@ const { UserSchema } = require("./user");
 const TruckOrderSchema = new Schema({
   date: Date,
   user: { type: Schema.Types.ObjectId, ref: "user" },
-  purchaseOrder: [],
+  purchaseOrder: [{ type: Schema.Types.ObjectId, ref: "ProductToOrder" }],
 });
 
 const TruckOrder = mongoose.model("TruckOrder", TruckOrderSchema);
