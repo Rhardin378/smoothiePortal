@@ -22,7 +22,6 @@ const storeSchema = new Schema({
     },
   },
   truckOrderDay: { type: String, required: true },
-  inventory: [{ type: product.productSchema }],
 });
 const Store = mongoose.model("Store", storeSchema);
 

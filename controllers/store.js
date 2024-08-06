@@ -1,12 +1,12 @@
-const Store = require("../models/store");
-const Product = require("../models/product");
+const { Store } = require("../models/store");
+const { Product } = require("../models/product");
 
 //still need route to get all products from inventory and map into productsToOrder documents
 
 exports.createStore = async (req, res, next) => {
   try {
     const { storeNumber, address, truckOrderDay, inventory } = req.body;
-    const store = new Store.Store({
+    const store = new Store({
       storeNumber,
       address,
       truckOrderDay,
@@ -23,7 +23,7 @@ exports.createStore = async (req, res, next) => {
 
 exports.getAllStores = async (req, res, next) => {
   try {
-    const stores = await Store.Store.find();
+    const stores = await Store.find();
     res.status(200).send(stores);
   } catch (err) {
     console.error(err);
@@ -34,7 +34,7 @@ exports.getAllStores = async (req, res, next) => {
 exports.addProductToInventory = async (req, res, next) => {
   const storeId = req.params.storeId;
   try {
-    const store = await Store.Store.findById(storeId);
+    const store = await Store.findById(storeId);
 
     if (!store) {
       return res.status(404).send({ message: "Store not found" });
@@ -42,7 +42,7 @@ exports.addProductToInventory = async (req, res, next) => {
 
     const { name, category, neededWeekly, inStock, units } = req.body;
     {
-      const product = new Product.Product({
+      const product = new Product({
         name,
         category,
         neededWeekly,
@@ -53,9 +53,6 @@ exports.addProductToInventory = async (req, res, next) => {
       });
       await product.save();
 
-      store.inventory.push(product);
-
-      await store.save();
       res.status(201).send(product);
     }
     console.log(store);
@@ -69,7 +66,7 @@ exports.getInventory = async (req, res, next) => {
   try {
     const storeId = req.params.storeId;
     const { category, productName } = req.query;
-    const store = await Store.Store.findById(storeId);
+    const store = await Store.findById(storeId);
 
     const query = { store: storeId };
 
@@ -84,7 +81,7 @@ exports.getInventory = async (req, res, next) => {
       query.name = { $regex: new RegExp(productName, "i") };
     }
 
-    const filteredInventory = await Product.Product.find(query);
+    const filteredInventory = await Product.find(query);
 
     console.log(category);
     console.log(productName);
@@ -104,7 +101,7 @@ exports.editProduct = async (req, res, next) => {
     const updatedData = req.body;
     console.log(`storeId: ${storeId}, productId: ${productId}`);
     console.log("updatedData:", updatedData);
-    const store = await Store.Store.findById(storeId);
+    const store = await Store.findById(storeId);
 
     if (!store) {
       return res.status(404).send({ message: "Store not found" });
@@ -136,27 +133,19 @@ exports.deleteProduct = async (req, res, next) => {
     const storeId = req.params.storeId;
     const productId = req.params.productId;
 
-    const store = await Store.Store.findById(storeId);
+    const store = await Store.findById(storeId);
 
     //remove from array and delete
 
     if (store) {
-      store.inventory = store.inventory.filter(
-        (product) => product._id.toString() !== productId
-      );
+      await Product.deleteOne({ _id: productId });
     } else {
       res.status(404).json({ message: "Store not found" });
     }
-    await Product.Product.deleteOne({ _id: productId });
-    await store.save();
 
     res.status(200).json({ message: "Product deleted sucessfully" });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "Internal Server Error" });
   }
-
-  // find product within the invenotry
-  //sort by category
-  //search by name
 };

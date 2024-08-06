@@ -10,7 +10,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const crypto = require("crypto");
 const storeSchema = require("./store");
-const TruckOrderSchema = require("./truckOrder");
+const { TruckOrderSchema } = require("./truckOrder");
 // const Movie = require("../models/movie");
 
 // Define our model
@@ -21,7 +21,7 @@ const UserSchema = new Schema({
   salt: String,
   role: String,
   store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
-  truckOrders: [{ type: TruckOrderSchema.TruckOrderSchema }],
+  truckOrders: [{ type: TruckOrderSchema }],
 });
 
 UserSchema.methods.setPassword = function (password) {
