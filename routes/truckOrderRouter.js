@@ -19,11 +19,15 @@ const isManager = (req, res, next) => {
 // POST /truckOrders - Create a truck order
 router.post(
   "/stores/:storeId/truckOrders",
-  requireAuth,
+  // requireAuth,
   truckOrderController.createTruckOrder
 );
 
 // POST /truckOrders/:truckOrderId/productsToOrder - Create a productToOrder and add to a truck order (if you want to add a new item not in inventory)
+router.post(
+  "/stores/:storeId/truckOrders/:truckOrderId/productsToOrder",
+  truckOrderController.addProductToOrder
+);
 
 // GET /truckOrders - Get all truck orders
 //query by date

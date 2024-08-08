@@ -64,3 +64,42 @@ exports.createTruckOrder = async (req, res, next) => {
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
+//controller function to add a productToOrder to a truch order
+exports.addProductToOrder = async (req, res, next) => {
+  const storeId = req.params.storeId;
+  const truckOrderId = req.params.truckOrderId;
+  let alert;
+
+  try {
+    const store = await Store.findById(storeId);
+
+    if (!store) {
+      return res.status(404).send({ message: "Store not found" });
+    }
+
+    const truckOrder = await TruckOrder.findById(truckOrderId);
+
+    if (!truckOrder) {
+      return res.status(404).send({ message: "Truck order not found" });
+    }
+
+    if (!req.body.product) {
+      alert = "Product being added to order may not currently be in inventory";
+    }
+
+    const product = new ProductToOrder({
+      name: req.body.name,
+      count: req.body.count,
+    });
+
+    await product.save();
+    truckOrder.purchaseOrder.push(product._id);
+    await truckOrder.save();
+    res
+      .status(201)
+      .send({ message: "product added to truck order", alert: alert });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
