@@ -103,3 +103,32 @@ exports.addProductToOrder = async (req, res, next) => {
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
+
+exports.getTruckOrdersByUser = async (req, res, next) => {
+  let date;
+  if (req.query.date) {
+    date = new Date(req.query.date);
+  }
+  const query = { user: req.params.userId };
+
+  if (date !== undefined) {
+    query.date = {
+      $gte: date,
+      $lt: new Date(date.getTime() + 24 * 60 * 60 * 1000), // Adds one day to the date) },
+    };
+  }
+  const truck_orders = await TruckOrder.find(query).populate({
+    path: "purchaseOrder",
+    populate: {
+      path: "product",
+      model: "product",
+    },
+  });
+
+  if (!truck_orders) {
+    res.status(404).send({ message: "No truck orders found" });
+    res.end();
+  }
+
+  res.status(200).send(truck_orders);
+};

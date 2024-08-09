@@ -31,6 +31,10 @@ router.post(
 
 // GET /truckOrders - Get all truck orders
 //query by date
+router.get(
+  "/users/:userId/truckOrders",
+  truckOrderController.getTruckOrdersByUser
+);
 
 // GET /truckOrders/:truckOrderId - Get a single truck order
 
