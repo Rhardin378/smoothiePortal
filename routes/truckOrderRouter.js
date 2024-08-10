@@ -37,6 +37,10 @@ router.get(
 );
 
 // GET /truckOrders/:truckOrderId - Get a single truck order
+router.get(
+  "/users/:userId/truckOrders/:orderId",
+  truckOrderController.getSingleTruckOrder
+);
 
 // PUT /truckOrders/:truckOrderId - Update a truck order (name )
 

@@ -132,3 +132,15 @@ exports.getTruckOrdersByUser = async (req, res, next) => {
 
   res.status(200).send(truck_orders);
 };
+
+exports.getSingleTruckOrder = async (req, res, next) => {
+  const truckOrderId = req.params.orderId;
+
+  const truckOrder = await TruckOrder.findById(truckOrderId);
+
+  if (!truckOrder) {
+    res.status(404).send({ message: "No truck order with that Id found." });
+  }
+
+  res.status(200).send(truckOrder);
+};
