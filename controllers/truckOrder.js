@@ -106,41 +106,129 @@ exports.addProductToOrder = async (req, res, next) => {
 
 exports.getTruckOrdersByUser = async (req, res, next) => {
   let date;
-  if (req.query.date) {
-    date = new Date(req.query.date);
-  }
-  const query = { user: req.params.userId };
+  try {
+    if (req.query.date) {
+      date = new Date(req.query.date);
+    }
+    const query = { user: req.params.userId };
 
-  if (date !== undefined) {
-    query.date = {
-      $gte: date,
-      $lt: new Date(date.getTime() + 24 * 60 * 60 * 1000), // Adds one day to the date) },
-    };
-  }
-  const truck_orders = await TruckOrder.find(query).populate({
-    path: "purchaseOrder",
-    populate: {
-      path: "product",
-      model: "product",
-    },
-  });
+    if (date !== undefined) {
+      query.date = {
+        $gte: date,
+        $lt: new Date(date.getTime() + 24 * 60 * 60 * 1000), // Adds one day to the date) },
+      };
+    }
+    const truck_orders = await TruckOrder.find(query).populate({
+      path: "purchaseOrder",
+      populate: {
+        path: "product",
+        model: "product",
+      },
+    });
 
-  if (!truck_orders) {
-    res.status(404).send({ message: "No truck orders found" });
-    res.end();
-  }
+    if (!truck_orders) {
+      res.status(404).send({ message: "No truck orders found" });
+      res.end();
+    }
 
-  res.status(200).send(truck_orders);
+    res.status(200).send(truck_orders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
 };
 
 exports.getSingleTruckOrder = async (req, res, next) => {
-  const truckOrderId = req.params.orderId;
+  const truckOrderId = req.params.truckOrderId;
+  try {
+    const truckOrder = await TruckOrder.findById(truckOrderId);
 
-  const truckOrder = await TruckOrder.findById(truckOrderId);
+    if (!truckOrder) {
+      res.status(404).send({ message: "No truck order with that Id found." });
+    }
 
-  if (!truckOrder) {
-    res.status(404).send({ message: "No truck order with that Id found." });
+    res.status(200).send(truckOrder);
+  } catch (err) {
+    res.status(500).send({ message: "Internal Server Error" });
   }
+};
 
-  res.status(200).send(truckOrder);
+exports.updateTruckOrder = async (req, res, next) => {
+  const truckOrderId = req.params.truckOrderId;
+  try {
+    const truckOrder = await TruckOrder.findByIdAndUpdate(
+      truckOrderId,
+      {
+        $set: { date: req.body.date },
+      },
+      { new: true }
+    );
+    res.status(200).send(truckOrder);
+
+    if (!truckOrder) {
+      res.status(404).send({ message: "No truck order with that Id found." });
+    }
+  } catch (err) {
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
+exports.updateProductToOrder = async (req, res, next) => {
+  const productToOrderId = req.params.productId;
+  try {
+    const productToOrder = await ProductToOrder.findByIdAndUpdate(
+      productToOrderId,
+      req.body,
+      { new: true }
+    );
+
+    res.status(200).send(productToOrder);
+
+    if (!productToOrder) {
+      res.status(404).send({ message: "No product with that id found" });
+    }
+  } catch (err) {
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
+exports.deleteProductToorder = async (req, res, next) => {
+  const productToOrderId = req.params.productId;
+  try {
+    const productToOrder = await ProductToOrder.findByIdAndDelete(
+      productToOrderId
+    );
+    if (!productToOrder) {
+      res.status(404).send({ message: "No product with that Id found" });
+    }
+
+    // Update TruckOrder documents to remove the reference
+    await TruckOrder.updateMany(
+      { purchaseOrder: productToOrderId },
+      { $pull: { purchaseOrder: productToOrderId } }
+    );
+
+    return res.status(200).send({
+      message: "product has been deleted from order and reference removed",
+    });
+  } catch (err) {
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
+exports.deleteTruckOrder = async (req, res, next) => {
+  const truckOrderId = req.params.truckOrderId;
+
+  try {
+    const truckOrder = await TruckOrder.findByIdAndDelete(truckOrderId);
+
+    if (!truckOrder) {
+      return res
+        .status(404)
+        .send({ message: "No truck order with that Id found" });
+    }
+    return res.status(200).send("Truck Order has been deleted");
+  } catch (err) {
+    res.status(500).send({ message: "Internal Server Error" });
+  }
 };

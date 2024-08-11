@@ -38,16 +38,33 @@ router.get(
 
 // GET /truckOrders/:truckOrderId - Get a single truck order
 router.get(
-  "/users/:userId/truckOrders/:orderId",
+  "/users/:userId/truckOrders/:truckOrderId",
   truckOrderController.getSingleTruckOrder
 );
 
-// PUT /truckOrders/:truckOrderId - Update a truck order (name )
-
+// PUT /truckOrders/:truckOrderId - Update a truck order date
+router.put(
+  "/users/:userId/truckOrders/:truckOrderId",
+  truckOrderController.updateTruckOrder
+);
 // PUT /truckOrders/:truckOrderId/productsToOrder/:productToOrderId - Update a productToOrder in a truck order
+// since subdoc update prod directly
+router.put(
+  "/users/:userId/truckOrders/:truckOrderId/productsToOrder/:productId",
+  truckOrderController.updateProductToOrder
+);
 
 // DELETE /truckOrders/:truckOrderId/productsToOrder/:productToOrderId - Delete a productToOrder from a truck order
 
+router.delete(
+  "/users/:userId/truckOrders/:trockOrderId/productsToOrder/:productId",
+  truckOrderController.deleteProductToorder
+);
+
 // DELETE /truckOrders/:truckOrderId - Delete a truck order
+router.delete(
+  "/users/:userId/truckOrders/:trockOrderId/",
+  truckOrderController.deleteTruckOrder
+);
 
 module.exports = router;
