@@ -25,15 +25,16 @@ const prePopulateOrder = async (products, truckOrder) => {
     return populatedProducts;
   } catch (err) {
     console.log(err);
-    throw err;
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
 
 // Controller function to create a truck order
 exports.createTruckOrder = async (req, res, next) => {
-  const storeId = req.params.storeId;
-  const userId = req.user._id;
   try {
+    const storeId = req.params.storeId;
+    const userId = req.user._id;
+
     const store = await Store.findById(storeId);
     if (!store) {
       return res.status(404).send({ message: "Store not found" });
@@ -66,11 +67,11 @@ exports.createTruckOrder = async (req, res, next) => {
 };
 //controller function to add a productToOrder to a truch order
 exports.addProductToOrder = async (req, res, next) => {
-  const storeId = req.params.storeId;
-  const truckOrderId = req.params.truckOrderId;
-  let alert;
-
   try {
+    const storeId = req.params.storeId;
+    const truckOrderId = req.params.truckOrderId;
+    let alert;
+
     const store = await Store.findById(storeId);
 
     if (!store) {
@@ -104,9 +105,11 @@ exports.addProductToOrder = async (req, res, next) => {
   }
 };
 
+//controller fucktion to get all truck orders that a user has
 exports.getTruckOrdersByUser = async (req, res, next) => {
-  let date;
   try {
+    let date;
+
     if (req.query.date) {
       date = new Date(req.query.date);
     }
@@ -138,9 +141,12 @@ exports.getTruckOrdersByUser = async (req, res, next) => {
   }
 };
 
+// controller to get a truck order by it's id
+
 exports.getSingleTruckOrder = async (req, res, next) => {
-  const truckOrderId = req.params.truckOrderId;
   try {
+    const truckOrderId = req.params.truckOrderId;
+
     const truckOrder = await TruckOrder.findById(truckOrderId);
 
     if (!truckOrder) {
@@ -149,13 +155,16 @@ exports.getSingleTruckOrder = async (req, res, next) => {
 
     res.status(200).send(truckOrder);
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
 
+//controller to update a truck order by its id
 exports.updateTruckOrder = async (req, res, next) => {
-  const truckOrderId = req.params.truckOrderId;
   try {
+    const truckOrderId = req.params.truckOrderId;
+
     const truckOrder = await TruckOrder.findByIdAndUpdate(
       truckOrderId,
       {
@@ -173,9 +182,11 @@ exports.updateTruckOrder = async (req, res, next) => {
   }
 };
 
+//controller to update a product to order by its id
 exports.updateProductToOrder = async (req, res, next) => {
-  const productToOrderId = req.params.productId;
   try {
+    const productToOrderId = req.params.productId;
+
     const productToOrder = await ProductToOrder.findByIdAndUpdate(
       productToOrderId,
       req.body,
@@ -188,13 +199,17 @@ exports.updateProductToOrder = async (req, res, next) => {
       res.status(404).send({ message: "No product with that id found" });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
 
+//controller to delete a productToOrder by it's Id
+
 exports.deleteProductToorder = async (req, res, next) => {
-  const productToOrderId = req.params.productId;
   try {
+    const productToOrderId = req.params.productId;
+
     const productToOrder = await ProductToOrder.findByIdAndDelete(
       productToOrderId
     );
@@ -212,14 +227,16 @@ exports.deleteProductToorder = async (req, res, next) => {
       message: "product has been deleted from order and reference removed",
     });
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
 
+//controller to delete a truckOrder by its id
 exports.deleteTruckOrder = async (req, res, next) => {
-  const truckOrderId = req.params.truckOrderId;
-
   try {
+    const truckOrderId = req.params.truckOrderId;
+
     const truckOrder = await TruckOrder.findByIdAndDelete(truckOrderId);
 
     if (!truckOrder) {
@@ -229,6 +246,7 @@ exports.deleteTruckOrder = async (req, res, next) => {
     }
     return res.status(200).send("Truck Order has been deleted");
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
