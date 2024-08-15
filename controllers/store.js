@@ -1,8 +1,6 @@
 const { Store } = require("../models/store");
 const { Product } = require("../models/product");
 
-//still need route to get all products from inventory and map into productsToOrder documents
-
 exports.createStore = async (req, res, next) => {
   try {
     const { storeNumber, address, truckOrderDay, inventory } = req.body;
