@@ -1,9 +1,9 @@
 // Store routes
 const express = require("express");
-const storeRouter = require("../routes/storeRouter");
-const userRouter = require("../routes/userRouter");
-const truckOrderRouter = require("../routes/truckOrderRouter");
-const smoothiesRouter = require("../routes/smoothiesRouter");
+const storeRouter = require("./storeRouter");
+const userRouter = require("./userRouter");
+const truckOrderRouter = require("./truckOrderRouter");
+const smoothiesRouter = require("./smoothiesRouter");
 
 module.exports = function (app) {
   app.use("/api/", storeRouter),

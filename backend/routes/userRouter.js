@@ -3,8 +3,6 @@ const router = express.Router();
 const Authentication = require("../controllers/authentication");
 const { requireAuth, requireSignin } = require("../middleware/authMiddleware");
 
-const requireAuth = passport.authenticate("jwt", { session: false });
-const requireSignin = passport.authenticate("local", { session: false });
 // POST - route to sign in user
 router.post("/auth/signin", requireSignin, Authentication.signin);
 //POST - route to sign up a new user
