@@ -28,7 +28,6 @@ exports.currentUser = async (req, res) => {
     name: user.name,
     role: user.role,
     store: user.store, // Populated store details
-    truckOrders: user.truckOrders,
   };
 
   res.send(userDetails);

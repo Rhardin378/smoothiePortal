@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { userAgent } from "next/server";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const isServer = typeof window === "undefined";
@@ -30,7 +31,7 @@ export const signin = createAsyncThunk(
       );
 
       console.log(response, response.data.email);
-      !isServer && localStorage.setItem("token", response.data);
+      !isServer && localStorage.setItem("token", response.data.token);
 
       return response.data;
     } catch (error) {
@@ -48,7 +49,11 @@ export const fetchUser = createAsyncThunk(
       },
     };
     try {
-      const response = await axios.get(`${BASE_URL}/auth/current_user`, config);
+      console.log(config);
+      const response = await axios.get(
+        `${BASE_URL}/api/auth/current_user`,
+        config
+      );
       !isServer && localStorage.setItem("token", response.data.token);
       return response.data;
     } catch (error) {
@@ -63,6 +68,10 @@ const authSlice = createSlice({
     authenticated: !isServer ? localStorage.getItem("token") : "",
     errorMessage: "",
     email: null,
+    name: null,
+    role: null,
+    store: {},
+    truckOrders: null,
   },
   reducers: {
     signout: (state) => {
@@ -90,6 +99,9 @@ const authSlice = createSlice({
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.authenticated = action.payload.token;
         state.email = action.payload.email || null;
+        state.name = action.payload.name;
+        state.role = action.payload.role;
+        state.store = action.payload.store;
       });
   },
 });
