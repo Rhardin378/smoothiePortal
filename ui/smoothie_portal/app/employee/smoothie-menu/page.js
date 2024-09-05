@@ -2,15 +2,14 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import SidebarNavigation from "../../components/SidebarNavigation";
-const Dashboard = () => {
-  const authenticated = useSelector((state) => state.auth.authenticated);
 
+const SmoothieMenu = () => {
   return (
     <div className="flex">
       <SidebarNavigation />
-      <div>Dashboard</div>
+      <div>All Smoothies</div>
     </div>
   );
 };
 
-export default Dashboard;
+export default SmoothieMenu;
