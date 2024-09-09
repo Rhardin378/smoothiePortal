@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import SidebarNavigation from "../../components/SidebarNavigation";
 
-const Inventory = () => {
+const TruckOrders = () => {
   return (
     <div className="flex">
       <SidebarNavigation />
@@ -12,4 +12,4 @@ const Inventory = () => {
   );
 };
 
-export default Inventory;
+export default TruckOrders;

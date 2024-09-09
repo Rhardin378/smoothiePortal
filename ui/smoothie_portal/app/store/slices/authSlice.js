@@ -25,10 +25,7 @@ export const signin = createAsyncThunk(
   "auth/signin",
   async (formProps, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/auth/signin`,
-        formProps
-      );
+      const response = await axios.post(`${BASE_URL}auth/signin`, formProps);
 
       console.log(response, response.data.email);
       !isServer && localStorage.setItem("token", response.data.token);
@@ -50,10 +47,7 @@ export const fetchUser = createAsyncThunk(
     };
     try {
       console.log(config);
-      const response = await axios.get(
-        `${BASE_URL}/api/auth/current_user`,
-        config
-      );
+      const response = await axios.get(`${BASE_URL}/auth/current_user`, config);
       !isServer && localStorage.setItem("token", response.data.token);
       return response.data;
     } catch (error) {

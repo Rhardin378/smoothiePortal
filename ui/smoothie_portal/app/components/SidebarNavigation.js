@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUser, signout } from "../store/slices/authSlice";
@@ -13,7 +13,7 @@ const SidebarNavigation = () => {
   // once the user data has been fetched. This prevents the renderStore function from
   // being called with incomplete data during the initial render.
   const renderStore = () => {
-    if (authenticated && store && store.address) {
+    if (authenticated && store.address && store.address.street) {
       return (
         <div className="mx-6 p-4">
           <h2 className="text-4xl font-bold mb-2">
@@ -36,7 +36,7 @@ const SidebarNavigation = () => {
     dispatch(fetchUser());
   }, [dispatch]);
   return (
-    <nav className="w-2/12 h-screen bg-gray-500 text-white flex flex-col">
+    <nav className="w-2/12 h-screen bg-gray-500 text-white flex flex-col flex-shrink-0">
       {renderStore()}
 
       <ul className="flex flex-col space-y-6 mx-6 p-4 text-xl">

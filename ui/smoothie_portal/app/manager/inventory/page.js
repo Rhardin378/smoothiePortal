@@ -1,11 +1,47 @@
 "use client";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getInventory } from "../../store/slices/inventorySlice";
+import { fetchUser, signout } from "../../store/slices/authSlice";
 import SidebarNavigation from "../../components/SidebarNavigation";
 import InventorySearchBar from "../../components/inventorySearch";
 import UserPanel from "../../components/userPanel";
 
 const Inventory = () => {
+  const dispatch = useDispatch();
+  const authenticated = useSelector((state) => state.auth.authenticated);
+  const name = useSelector((state) => state.auth.name);
+  const store = useSelector((state) => state.auth.store);
+  const role = useSelector((state) => state.auth.role);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await dispatch(fetchUser());
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  useEffect(() => {
+    // if (store && store.id) {
+    //   console.log("working working");
+    const fetchInventory = async () => {
+      try {
+        console.log(store);
+        const storeId = store._id;
+        await dispatch(getInventory({ storeId }));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchInventory();
+    // }
+  }, [dispatch, store]);
   return (
     <div className="flex">
       <SidebarNavigation />
