@@ -1,11 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getInventory } from "../../store/slices/inventorySlice";
+
 import { fetchUser, signout } from "../../store/slices/authSlice";
 import SidebarNavigation from "../../components/SidebarNavigation";
 import InventorySearchBar from "../../components/inventorySearch";
 import UserPanel from "../../components/userPanel";
+import InventoryTable from "../../components/inventoryTable";
 
 const Inventory = () => {
   const dispatch = useDispatch();
@@ -26,33 +27,22 @@ const Inventory = () => {
     fetchData();
   }, [dispatch]);
 
-  useEffect(() => {
-    // if (store && store.id) {
-    //   console.log("working working");
-    const fetchInventory = async () => {
-      try {
-        console.log(store);
-        const storeId = store._id;
-        await dispatch(getInventory({ storeId }));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchInventory();
-    // }
-  }, [dispatch, store]);
   return (
     <div className="flex">
       <SidebarNavigation />
-      <div className="flex flex-col w-full">
-        <div className="flex justify-between items-center px-4 py-3">
+      <div className="flex flex-col w-3/4 mx-auto ">
+        <div className="flex justify-between items-center  py-3">
           <InventorySearchBar />
           <UserPanel />
         </div>
-        <div className="text-3xl ml-4 px-4 py-2 font-mono font-bold">
-          Inventory
+        <div className="text-3xl   py-2 font-mono font-bold">Inventory</div>
+        <div className="flex items-center   py-2">
+          <button className="flex items-center  border border-transparent hover:border-2 hover:border-black hover:bg-transparent hover:text-white  font-bold py-1 px-2 rounded ">
+            <span className="text-2xl mr-2">&#x2b;</span>
+            Add New Item
+          </button>
         </div>
+        <InventoryTable store={store} />
       </div>
     </div>
   );

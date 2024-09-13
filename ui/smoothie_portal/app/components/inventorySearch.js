@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 const InventorySearchBar = () => {
   return (
     <div
-      className="flex w-1/2 px-4 mx-4 py-3 rounded-md 
+      className="flex w-1/2 px-4  py-3 rounded-md 
     border-2 border-gray-500 overflow-hidden max-w-md bg-white font-[sans-serif]"
     >
       <input

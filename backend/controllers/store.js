@@ -63,7 +63,7 @@ exports.addProductToInventory = async (req, res, next) => {
 exports.getInventory = async (req, res, next) => {
   try {
     const storeId = req.params.storeId;
-    const { category, productName } = req.query;
+    const { category, productName, pageNumber } = req.query;
     const store = await Store.findById(storeId);
 
     const query = { store: storeId };
@@ -79,12 +79,23 @@ exports.getInventory = async (req, res, next) => {
       query.name = { $regex: new RegExp(productName, "i") };
     }
 
-    const filteredInventory = await Product.find(query);
+    // Default values for pagination
+    const productsPerPage = 10;
+    const page = parseInt(pageNumber, 10) || 1;
+    const skip = (page - 1) * productsPerPage;
+
+    const filteredInventory = await Product.find(query)
+      .skip(skip)
+      .limit(productsPerPage);
+    const totalCount = await Product.countDocuments(query);
 
     console.log(category);
     console.log(productName);
-    console.log(filteredInventory);
-    res.status(200).send({ inventory: filteredInventory });
+    // console.log(filteredInventory);
+    console.log(totalCount);
+    res
+      .status(200)
+      .send({ inventory: filteredInventory, count: totalCount, page: page });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "Internal Server Error" });
