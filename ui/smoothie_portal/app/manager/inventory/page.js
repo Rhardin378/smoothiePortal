@@ -7,6 +7,7 @@ import SidebarNavigation from "../../components/SidebarNavigation";
 import InventorySearchBar from "../../components/inventorySearch";
 import UserPanel from "../../components/userPanel";
 import InventoryTable from "../../components/inventoryTable";
+import AddItemModal from "../../components/addItemModal";
 
 const Inventory = () => {
   const dispatch = useDispatch();
@@ -37,10 +38,7 @@ const Inventory = () => {
         </div>
         <div className="text-3xl   py-2 font-mono font-bold">Inventory</div>
         <div className="flex items-center   py-2">
-          <button className="flex items-center  border border-transparent hover:border-2 hover:border-black hover:bg-transparent hover:text-white  font-bold py-1 px-2 rounded ">
-            <span className="text-2xl mr-2">&#x2b;</span>
-            Add New Item
-          </button>
+          <AddItemModal />
         </div>
         <InventoryTable store={store} />
       </div>

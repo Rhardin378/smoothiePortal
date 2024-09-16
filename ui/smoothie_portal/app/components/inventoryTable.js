@@ -1,10 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getInventory } from "../store/slices/inventorySlice";
 import InventoryTableItem from "./inventoryTableItem";
+import InventoryPageNumber from "../components/inventoryPageNumber";
 const InventoryTable = ({ store }) => {
   const inventory = useSelector((state) => state.inventory.inventory);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -14,7 +16,7 @@ const InventoryTable = ({ store }) => {
         try {
           console.log(store);
           const storeId = store._id;
-          await dispatch(getInventory({ storeId }));
+          await dispatch(getInventory({ storeId, pageNumber }));
         } catch (error) {
           console.log(error);
         }
@@ -22,47 +24,50 @@ const InventoryTable = ({ store }) => {
 
       fetchInventory();
     }
-  }, [dispatch, store]);
+  }, [dispatch, store, pageNumber]);
   return (
-    <div className="overflow-x-auto flex mt-4">
-      <table className="min-w-full w-2/3 bg-white border border-gray-200">
-        <thead>
-          <tr className="bg-red-600">
-            <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white">
-              Item Name
-            </th>
-            <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white">
-              Category
-            </th>
-            <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white">
-              Quantity
-            </th>
-            <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white">
-              Needed Weekly
-            </th>
-            <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white">
-              Last Updated
-            </th>
-            <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white"></th>
-            <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {inventory.map((product) => {
-            return (
-              <InventoryTableItem
-                key={product._id}
-                name={product.name}
-                category={product.category}
-                neededWeekly={product.neededWeekly}
-                inStock={product.inStock}
-                units={product.units}
-                lastUpdated={product.lastUpdated}
-              />
-            );
-          })}
-        </tbody>
-      </table>
+    <div className="container mx-auto">
+      <div className="overflow-x-auto flex mt-4">
+        <table className="min-w-full w-2/3 bg-white border border-gray-200">
+          <thead>
+            <tr className="bg-red-600">
+              <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white">
+                Item Name
+              </th>
+              <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white">
+                Category
+              </th>
+              <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white">
+                Quantity
+              </th>
+              <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white">
+                Needed Weekly
+              </th>
+              <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white">
+                Last Updated
+              </th>
+              <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white"></th>
+              <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {inventory.map((product) => {
+              return (
+                <InventoryTableItem
+                  key={product._id}
+                  name={product.name}
+                  category={product.category}
+                  neededWeekly={product.neededWeekly}
+                  inStock={product.inStock}
+                  units={product.units}
+                  lastUpdated={product.lastUpdated}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <InventoryPageNumber setPageNumber={setPageNumber} />
     </div>
   );
 };

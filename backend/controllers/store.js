@@ -84,18 +84,16 @@ exports.getInventory = async (req, res, next) => {
     const page = parseInt(pageNumber, 10) || 1;
     const skip = (page - 1) * productsPerPage;
 
-    const filteredInventory = await Product.find(query)
+    const inventory = await Product.find(query)
       .skip(skip)
       .limit(productsPerPage);
     const totalCount = await Product.countDocuments(query);
-
     console.log(category);
     console.log(productName);
-    // console.log(filteredInventory);
     console.log(totalCount);
     res
       .status(200)
-      .send({ inventory: filteredInventory, count: totalCount, page: page });
+      .send({ inventory: inventory, count: totalCount, page: page });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "Internal Server Error" });

@@ -12,11 +12,15 @@ const isServer = typeof window === "undefined";
 
 export const getInventory = createAsyncThunk(
   "inventory/getInventory",
-  async ({ storeId, productName }, { isRejectedWithValue }) => {
+  async ({ storeId, productName, pageNumber = 1 }, { isRejectedWithValue }) => {
     try {
       const config = {
         headers: {
           Authorization: "Bearer " + window.localStorage.getItem("token"),
+        },
+        params: {
+          productName: productName,
+          pageNumber: pageNumber,
         },
       };
       const response = await axios.get(
@@ -24,7 +28,7 @@ export const getInventory = createAsyncThunk(
         config
       );
 
-      return response.data.inventory;
+      return response.data;
     } catch (error) {
       console.log(error);
       return rejectWithValue(error);
@@ -35,13 +39,15 @@ const inventorySLice = createSlice({
   name: "inventory",
   initialState: {
     inventory: [],
+    count: 0,
     errorMessage: "",
     singleProduct: {},
     status: "idle",
   },
   extraReducers: (builder) => {
     builder.addCase(getInventory.fulfilled, (state, action) => {
-      state.inventory = action.payload;
+      state.inventory = action.payload.inventory;
+      state.count = action.payload.count;
     });
   },
 });
