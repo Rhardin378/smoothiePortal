@@ -38,7 +38,7 @@ const Inventory = () => {
         </div>
         <div className="text-3xl   py-2 font-mono font-bold">Inventory</div>
         <div className="flex items-center   py-2">
-          <AddItemModal />
+          <AddItemModal store={store} />
         </div>
         <InventoryTable store={store} />
       </div>

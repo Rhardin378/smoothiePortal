@@ -67,7 +67,10 @@ const InventoryTable = ({ store }) => {
           </tbody>
         </table>
       </div>
-      <InventoryPageNumber setPageNumber={setPageNumber} />
+      <InventoryPageNumber
+        setPageNumber={setPageNumber}
+        currentPage={pageNumber}
+      />
     </div>
   );
 };

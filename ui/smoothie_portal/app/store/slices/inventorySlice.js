@@ -35,6 +35,39 @@ export const getInventory = createAsyncThunk(
     }
   }
 );
+
+export const addItemToInventory = createAsyncThunk(
+  "inventory/addItemToInventory",
+  async (
+    { storeId, name, category, neededWeekly, inStock, units },
+    { isRejectedWithValue }
+  ) => {
+    try {
+      const newProduct = {
+        name,
+        category,
+        neededWeekly,
+        inStock,
+        units,
+      };
+      const config = {
+        headers: {
+          Authorization: "Bearer " + window.localStorage.getItem("token"),
+        },
+      };
+      const response = await axios.post(
+        `${BASE_URL}stores/${storeId}/inventory`,
+        newProduct,
+        config
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 const inventorySLice = createSlice({
   name: "inventory",
   initialState: {
@@ -45,10 +78,25 @@ const inventorySLice = createSlice({
     status: "idle",
   },
   extraReducers: (builder) => {
-    builder.addCase(getInventory.fulfilled, (state, action) => {
-      state.inventory = action.payload.inventory;
-      state.count = action.payload.count;
-    });
+    builder
+      .addCase(getInventory.fulfilled, (state, action) => {
+        state.inventory = action.payload.inventory;
+        state.count = action.payload.count;
+      })
+
+      .addCase(addItemToInventory.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(addItemToInventory.fulfilled, (state, action) => {
+        state.inventory.push(action.payload);
+        state.count += 1;
+        state.status = "succeeded";
+      })
+      .addCase(addItemToInventory.rejected, (state, action) => {
+        state.status = "failed";
+        state.errorMessage =
+          action.payload || "Failed to add item to inventory";
+      });
   },
 });
 

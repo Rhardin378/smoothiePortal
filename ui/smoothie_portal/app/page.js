@@ -38,7 +38,7 @@ export default function Home() {
   };
   const dispatch = useDispatch();
 
-  const handleFormSubmit = async (data) => {
+  const onSubmit = async (data) => {
     try {
       const result = await dispatch(signin(data));
       console.log(result.payload);
@@ -64,7 +64,7 @@ export default function Home() {
             <p> {errorMessage} </p> <p> Invalid Username or Password</p>
           </div>
         )}
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-6">
             <label
               htmlFor="email"
