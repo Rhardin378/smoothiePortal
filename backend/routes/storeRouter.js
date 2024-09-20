@@ -8,7 +8,7 @@ router.post("/stores", requireAuth, storeController.createStore);
 
 // POST  - Create a product and add to a store's inventory
 router.post(
-  "/stores/:storeId/products",
+  "/stores/:storeId/inventory",
   requireAuth,
   isManager,
   storeController.addProductToInventory
