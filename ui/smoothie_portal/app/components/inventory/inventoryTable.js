@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { getInventory } from "../store/slices/inventorySlice";
-import InventoryTableItem from "./inventoryTableItem";
-import InventoryPageNumber from "../components/inventoryPageNumber";
+import { getInventory } from "../../store/slices/inventorySlice";
+import InventoryTableItem from "../inventory/inventoryTableItem";
+import InventoryPageNumber from "../inventory/inventoryPageNumber";
 const InventoryTable = ({ store }) => {
   const inventory = useSelector((state) => state.inventory.inventory);
   const [pageNumber, setPageNumber] = useState(1);
@@ -55,6 +55,7 @@ const InventoryTable = ({ store }) => {
               return (
                 <InventoryTableItem
                   key={product._id}
+                  productId={product._id}
                   name={product.name}
                   category={product.category}
                   neededWeekly={product.neededWeekly}

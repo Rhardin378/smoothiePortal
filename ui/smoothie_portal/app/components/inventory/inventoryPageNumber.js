@@ -2,7 +2,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { getInventory } from "../store/slices/inventorySlice";
+import { getInventory } from "../../store/slices/inventorySlice";
 
 const InventoryPageNumber = ({ setPageNumber, currentPage }) => {
   const productsPerPage = 10;

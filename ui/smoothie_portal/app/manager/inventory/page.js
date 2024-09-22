@@ -4,10 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { fetchUser, signout } from "../../store/slices/authSlice";
 import SidebarNavigation from "../../components/SidebarNavigation";
-import InventorySearchBar from "../../components/inventorySearch";
+import InventorySearchBar from "../../components/inventory/inventorySearch";
 import UserPanel from "../../components/userPanel";
-import InventoryTable from "../../components/inventoryTable";
-import AddItemModal from "../../components/addItemModal";
+import InventoryTable from "../../components/inventory/inventoryTable";
+import AddItemModal from "../../components/inventory/addItemModal";
 
 const Inventory = () => {
   const dispatch = useDispatch();

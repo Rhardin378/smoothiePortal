@@ -1,5 +1,7 @@
 import React from "react";
+import EditItemModal from "./editItemModal";
 const InventoryTableItem = ({
+  productId,
   name,
   category,
   neededWeekly,
@@ -26,9 +28,7 @@ const InventoryTableItem = ({
         {lastUpdated}
       </td>
       <td className="py-3  border-b border-gray-200 text-center text-sm font-bold text-gray-700">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
-          Edit
-        </button>
+        <EditItemModal productId={productId} />
       </td>
       <td className="py-3  border-b border-gray-200 text-center text-sm text-gray-700">
         <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
