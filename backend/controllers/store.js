@@ -85,6 +85,9 @@ exports.getInventory = async (req, res, next) => {
     const skip = (page - 1) * productsPerPage;
 
     const inventory = await Product.find(query)
+      .sort({ category: 1 }) // Sort by category name in alphabetical order
+      .sort({ name: 1 }) // Sort by  name in alphabetical order
+
       .skip(skip)
       .limit(productsPerPage);
     const totalCount = await Product.countDocuments(query);
