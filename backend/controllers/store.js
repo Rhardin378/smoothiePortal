@@ -103,33 +103,61 @@ exports.getInventory = async (req, res, next) => {
   }
 };
 
-exports.editProduct = async (req, res, next) => {
+exports.getSingleProduct = async (req, res, next) => {
   try {
-    console.log("put request");
     const storeId = req.params.storeId;
     const productId = req.params.productId;
-    const updatedData = req.body;
-    console.log(`storeId: ${storeId}, productId: ${productId}`);
-    console.log("updatedData:", updatedData);
+
     const store = await Store.findById(storeId);
 
     if (!store) {
       return res.status(404).send({ message: "Store not found" });
     }
 
-    let product = await store.inventory.id(productId);
+    const product = await Product.findById(productId);
+
+    if (!productId || !product) {
+      return res.status(404).send({ message: "product not found" });
+    }
+
+    res.status(200).send({
+      inventory: product,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
+exports.editProduct = async (req, res, next) => {
+  try {
+    console.log("put request");
+    const storeId = req.params.storeId;
+    const productId = req.params.productId;
+    const updatedData = req.body;
+    updatedData.lastUpdated = new Date();
+
+    console.log(`storeId: ${storeId}, productId: ${productId}`);
+    console.log("updatedData:", updatedData);
+
+    const store = await Store.findById(storeId);
+
+    if (!store) {
+      return res.status(404).send({ message: "Store not found" });
+    }
+    const product = await Product.findByIdAndUpdate(
+      productId,
+      { $set: updatedData },
+      { new: true }
+    );
 
     if (!product) {
       return res.status(404).send({ message: "Product not found" });
     }
 
-    Object.assign(product, updatedData);
-
-    product.lastUpdated = new Date();
-
     await store.save();
 
-    res.status(200).send(product);
+    res.status(200).send({ message: "Product updated successfully", product });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "Internal Server Error" });

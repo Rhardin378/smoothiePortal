@@ -8,6 +8,8 @@ const InventoryTableItem = ({
   inStock,
   units,
   lastUpdated,
+  pageNumber,
+  currentPage,
 }) => {
   return (
     <tr className="odd:bg-gray-100 even:bg-white hover:bg-gray-200">
@@ -28,7 +30,11 @@ const InventoryTableItem = ({
         {lastUpdated}
       </td>
       <td className="py-3  border-b border-gray-200 text-center text-sm font-bold text-gray-700">
-        <EditItemModal productId={productId} />
+        <EditItemModal
+          productId={productId}
+          pageNumber={pageNumber}
+          currentPage={currentPage}
+        />
       </td>
       <td className="py-3  border-b border-gray-200 text-center text-sm text-gray-700">
         <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">

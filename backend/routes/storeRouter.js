@@ -23,6 +23,15 @@ router.get(
   isManager,
   storeController.getInventory
 );
+
+// GET - Get a single product from a store's inventory
+
+router.get(
+  "/stores/:storeId/inventory/:productId",
+  requireAuth,
+  isManager,
+  storeController.getSingleProduct
+);
 // PUT  - Update a product in a store's inventory
 
 router.put(

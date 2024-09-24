@@ -62,6 +62,8 @@ const InventoryTable = ({ store }) => {
                   inStock={product.inStock}
                   units={product.units}
                   lastUpdated={product.lastUpdated}
+                  pageNumber={pageNumber}
+                  currentPage={pageNumber}
                 />
               );
             })}

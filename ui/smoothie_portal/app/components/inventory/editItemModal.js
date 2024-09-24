@@ -1,17 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
-import { addItemToInventory } from "../../store/slices/inventorySlice";
+import {
+  editInventoryItem,
+  getInventory,
+  getSingleProduct,
+} from "../../store/slices/inventorySlice";
+import store from "@/app/store/configureStore";
 
-const EditItemModal = ({ productId }) => {
+const EditItemModal = ({ productId, pageNumber, currentPage }) => {
   // still need to add edit slice
-  // need to make a get request  for single product on backend
+
+  const dispatch = useDispatch();
+  const singleProduct = useSelector((state) => state.inventory.singleProduct);
+  console.log(pageNumber);
   const [isModalOpen, setIsModalOpen] = useState(false);
   console.log("productID:", productId);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    category: "",
+    neededWeekly: 0,
+    inStock: 0,
+    units: "",
+  });
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -31,20 +47,48 @@ const EditItemModal = ({ productId }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(productSchema),
   });
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    if (isModalOpen) {
+      const fetchSingleProduct = async () => {
+        try {
+          await dispatch(getSingleProduct({ storeId, productId }));
+          console.log("useEffect");
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchSingleProduct();
+    }
+  }, [dispatch, isModalOpen, productId]);
+
+  useEffect(() => {
+    if (singleProduct) {
+      reset({
+        name: singleProduct.name || "",
+        category: singleProduct.category || "",
+        neededWeekly: singleProduct.neededWeekly || 0,
+        inStock: singleProduct.inStock || "",
+        units: singleProduct.units || "",
+        // Populate other fields as needed
+      });
+    }
+  }, [singleProduct]);
 
   const onSubmit = async (data) => {
     try {
       const formData = { storeId, productId, ...data };
       console.log(formData);
       // where edit will be added
-      // await dispatch(addItemToInventory(formData));
-      closeModal();
+      await dispatch(editInventoryItem(formData));
+      await dispatch(getInventory({ storeId, pageNumber })).then(() =>
+        closeModal()
+      );
     } catch (error) {
       console.error(error);
     }

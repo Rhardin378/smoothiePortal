@@ -31,7 +31,54 @@ export const getInventory = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
-      return rejectWithValue(error);
+      return isRejectedWithValue;
+    }
+  }
+);
+
+export const getSingleProduct = createAsyncThunk(
+  "inventory/getSingleProduct",
+  async ({ storeId, productId }, { isRejectedWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: "Bearer " + window.localStorage.getItem("token"),
+        },
+      };
+      const response = await axios.get(
+        `${BASE_URL}stores/${storeId}/inventory/${productId}`,
+        config
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return isRejectedWithValue;
+    }
+  }
+);
+
+export const editInventoryItem = createAsyncThunk(
+  "inventory, editInventoryItem",
+  async (updatedProduct, { isRejectedWithValue }) => {
+    const { productId, storeId } = updatedProduct;
+    try {
+      const config = {
+        headers: {
+          Authorization: "Bearer " + window.localStorage.getItem("token"),
+        },
+      };
+
+      const response = axios.put(
+        `${BASE_URL}stores/${storeId}/inventory/${productId}`,
+        updatedProduct,
+        config
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error(err);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -96,6 +143,34 @@ const inventorySLice = createSlice({
         state.status = "failed";
         state.errorMessage =
           action.payload || "Failed to add item to inventory";
+      })
+      .addCase(getSingleProduct.fulfilled, (state, action) => {
+        state.singleProduct = action.payload.inventory;
+        state.status = "succeeded";
+      })
+      .addCase(getSingleProduct.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getSingleProduct.rejected, (state, action) => {
+        state.status("failed");
+        state.errorMessage =
+          action.payload || "failed to fetch item from inventory";
+      })
+      .addCase(editInventoryItem.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(editInventoryItem.fulfilled, (state, action) => {
+        state.loading = false;
+        state.status = "succeeded";
+        if (action.payload && action.payload.product) {
+        } else {
+          state.error = "Invalid payload structure";
+        }
+      })
+      .addCase(editInventoryItem.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
