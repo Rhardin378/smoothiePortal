@@ -1,5 +1,6 @@
 import React from "react";
 import EditItemModal from "./editItemModal";
+import DeleteItemModal from "./deleteItemModal";
 const InventoryTableItem = ({
   productId,
   name,
@@ -10,6 +11,7 @@ const InventoryTableItem = ({
   lastUpdated,
   pageNumber,
   currentPage,
+  storeId,
 }) => {
   return (
     <tr className="odd:bg-gray-100 even:bg-white hover:bg-gray-200">
@@ -37,9 +39,7 @@ const InventoryTableItem = ({
         />
       </td>
       <td className="py-3  border-b border-gray-200 text-center text-sm text-gray-700">
-        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
-          &#x2716; {/* Unicode character for a big red X */}
-        </button>
+        <DeleteItemModal productId={productId} storeId={storeId} />
       </td>
     </tr>
   );

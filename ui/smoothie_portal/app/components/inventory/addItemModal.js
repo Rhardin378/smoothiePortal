@@ -114,7 +114,7 @@ const AddItemModal = ({ store }) => {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   {...register("name", { required: true })}
                 />
-                {errors.email?.message}
+                {errors.name?.message}
                 <label htmlFor="category">Category</label>
                 <select
                   id="category"
@@ -122,6 +122,7 @@ const AddItemModal = ({ store }) => {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   {...register("category", { required: true })}
                 >
+                  {errors.category?.message}
                   <option value="frozen">Frozen</option>
                   <option value="refrigerated">Refrigerated</option>
                   <option value="dry">Dry</option>
@@ -129,22 +130,35 @@ const AddItemModal = ({ store }) => {
 
                 <label htmlFor="neededWeekly">Needed Weekly</label>
                 <input
-                  type="number"
+                  type="text"
                   id="neededWeekly"
                   name="neededWeekly"
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  {...register("neededWeekly", { required: true })}
+                  {...register("neededWeekly", {
+                    required: true,
+                    pattern: {
+                      value: /^\d*\.?\d+$/,
+                      message: "Please enter a valid number",
+                    },
+                  })}
                 />
+                {errors.neededWeekly?.message}
 
                 <label htmlFor="inStock">In Stock</label>
                 <input
-                  type="number"
+                  type="text"
                   id="inStock"
                   name="inStock"
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  {...register("inStock", { required: true })}
+                  {...register("inStock", {
+                    required: true,
+                    pattern: {
+                      value: /^\d*\.?\d+$/,
+                      message: "Please enter a valid number",
+                    },
+                  })}
                 />
-
+                {errors.inStock?.message}
                 <label htmlFor="units">Units</label>
                 <input
                   type="text"
@@ -153,7 +167,7 @@ const AddItemModal = ({ store }) => {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   {...register("units", { required: true })}
                 />
-
+                {errors.units?.message}
                 {/* Modal footer */}
                 <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                   <button

@@ -4,25 +4,49 @@ import { useEffect, useState } from "react";
 import { getInventory } from "../../store/slices/inventorySlice";
 import InventoryTableItem from "../inventory/inventoryTableItem";
 import InventoryPageNumber from "../inventory/inventoryPageNumber";
-const InventoryTable = ({ store }) => {
+const InventoryTable = ({ store, searchTerm }) => {
   const inventory = useSelector((state) => state.inventory.inventory);
+
   const [pageNumber, setPageNumber] = useState(1);
 
   const [inventoryChanged, setInventoryChanged] = useState(false);
+  const dispatch = useDispatch();
+  // Effect to fetch inventory when inventoryChanged is true
 
   useEffect(() => {
     setInventoryChanged(true);
   }, [inventory]);
 
-  const dispatch = useDispatch();
+  // Effect to fetch inventory when store, pageNumber, or inventoryChanged changes
+
+  // Effect to fetch inventory when inventoryChanged is true
   useEffect(() => {
     if (store && store._id && inventoryChanged) {
       console.log("working working");
       const fetchInventory = async () => {
         try {
           console.log(store);
+          console.log("inventory Changed");
           const storeId = store._id;
-          await dispatch(getInventory({ storeId, pageNumber }));
+          await dispatch(
+            getInventory({ storeId, pageNumber, productName: searchTerm })
+          );
+          setInventoryChanged(false);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchInventory();
+    } else if (store && store._id) {
+      console.log("working working");
+      const fetchInventory = async () => {
+        try {
+          console.log(store);
+          const storeId = store._id;
+          await dispatch(
+            getInventory({ storeId, pageNumber, productName: searchTerm })
+          );
           setInventoryChanged(false);
         } catch (error) {
           console.log(error);
@@ -71,6 +95,7 @@ const InventoryTable = ({ store }) => {
                   lastUpdated={product.lastUpdated}
                   pageNumber={pageNumber}
                   currentPage={pageNumber}
+                  storeId={store._id}
                 />
               );
             })}

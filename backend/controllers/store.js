@@ -43,8 +43,8 @@ exports.addProductToInventory = async (req, res, next) => {
       const product = new Product({
         name,
         category,
-        neededWeekly,
-        inStock,
+        neededWeekly: Number(neededWeekly),
+        inStock: Number(inStock),
         units,
         lastUpdated: new Date(),
         store: store._id,
@@ -85,8 +85,7 @@ exports.getInventory = async (req, res, next) => {
     const skip = (page - 1) * productsPerPage;
 
     const inventory = await Product.find(query)
-      .sort({ category: 1 }) // Sort by category name in alphabetical order
-      .sort({ name: 1 }) // Sort by  name in alphabetical order
+      .sort({ lastUpdated: -1 }) // Sort by lastUpdated in descending order
 
       .skip(skip)
       .limit(productsPerPage);
@@ -181,7 +180,9 @@ exports.deleteProduct = async (req, res, next) => {
       res.status(404).json({ message: "Store not found" });
     }
 
-    res.status(200).json({ message: "Product deleted sucessfully" });
+    res
+      .status(200)
+      .json({ message: "Product deleted sucessfully", productId: productId });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "Internal Server Error" });

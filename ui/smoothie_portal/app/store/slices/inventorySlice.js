@@ -118,13 +118,15 @@ export const addItemToInventory = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk(
   "inventory/deleteProduct",
-  async ({ id }, { rejectWithValue }) => {
+  async ({ id, storeId }, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
           Authorization: "Bearer " + window.localStorage.getItem("token"),
         },
       };
+      console.log(id);
+
       const response = await axios.delete(
         `${BASE_URL}stores/${storeId}/inventory/${id}`,
         config
@@ -143,12 +145,15 @@ const inventorySLice = createSlice({
     count: 0,
     errorMessage: "",
     singleProduct: {},
+    productNameQuery: "",
     status: "idle",
   },
   extraReducers: (builder) => {
     builder
       .addCase(getInventory.fulfilled, (state, action) => {
         state.inventory = action.payload.inventory;
+
+        state.productNameQuery = action.meta.arg.productName || ""; // Update productNameQuery
         state.count = action.payload.count;
       })
 
@@ -205,7 +210,13 @@ const inventorySLice = createSlice({
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.loading = false;
+
         state.status = "succeeded";
+
+        const deletedProductId = action.payload.productId; // Use the returned ID
+        state.inventory = state.inventory.filter(
+          (product) => product._id !== deletedProductId
+        );
       })
 
       .addCase(deleteProduct.rejected, (state, action) => {
