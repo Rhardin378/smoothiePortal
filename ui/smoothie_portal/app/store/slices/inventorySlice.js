@@ -12,7 +12,7 @@ const isServer = typeof window === "undefined";
 
 export const getInventory = createAsyncThunk(
   "inventory/getInventory",
-  async ({ storeId, productName, pageNumber = 1 }, { isRejectedWithValue }) => {
+  async ({ storeId, productName, pageNumber = 1 }, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
@@ -31,14 +31,14 @@ export const getInventory = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
-      return isRejectedWithValue;
+      return rejectWithValue(error.response?.data);
     }
   }
 );
 
 export const getSingleProduct = createAsyncThunk(
   "inventory/getSingleProduct",
-  async ({ storeId, productId }, { isRejectedWithValue }) => {
+  async ({ storeId, productId }, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
@@ -53,14 +53,14 @@ export const getSingleProduct = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error(error);
-      return isRejectedWithValue;
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
 export const editInventoryItem = createAsyncThunk(
   "inventory, editInventoryItem",
-  async (updatedProduct, { isRejectedWithValue }) => {
+  async (updatedProduct, { rejectWithValue }) => {
     const { productId, storeId } = updatedProduct;
     try {
       const config = {
@@ -87,7 +87,7 @@ export const addItemToInventory = createAsyncThunk(
   "inventory/addItemToInventory",
   async (
     { storeId, name, category, neededWeekly, inStock, units },
-    { isRejectedWithValue }
+    { rejectWithValue }
   ) => {
     try {
       const newProduct = {
@@ -111,6 +111,27 @@ export const addItemToInventory = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteProduct = createAsyncThunk(
+  "inventory/deleteProduct",
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: "Bearer " + window.localStorage.getItem("token"),
+        },
+      };
+      const response = await axios.delete(
+        `${BASE_URL}stores/${storeId}/inventory/${id}`,
+        config
+      );
+
+      return response.data;
+    } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
@@ -152,7 +173,7 @@ const inventorySLice = createSlice({
         state.status = "loading";
       })
       .addCase(getSingleProduct.rejected, (state, action) => {
-        state.status("failed");
+        state.status = "failed";
         state.errorMessage =
           action.payload || "failed to fetch item from inventory";
       })
@@ -164,6 +185,16 @@ const inventorySLice = createSlice({
         state.loading = false;
         state.status = "succeeded";
         if (action.payload && action.payload.product) {
+          // find the object I'm updating and replace it with the new object
+          const updatedProductId = action.payload.product._id;
+          const productIndex = state.inventory.findIndex(
+            (product) => product._id === updatedProductId
+          );
+          if (productIndex !== -1) {
+            state.inventory[productIndex] = action.payload.product;
+          } else {
+            state.error = "Product not found in inventory";
+          }
         } else {
           state.error = "Invalid payload structure";
         }
@@ -171,6 +202,20 @@ const inventorySLice = createSlice({
       .addCase(editInventoryItem.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.status = "succeeded";
+      })
+
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.status = "failed";
+        state.errorMessage = action.payload;
+      })
+      .addCase(deleteProduct.pending, (state, action) => {
+        state.loading = true;
+        state.status = "loading";
       });
   },
 });

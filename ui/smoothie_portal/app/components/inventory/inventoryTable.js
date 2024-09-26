@@ -8,15 +8,22 @@ const InventoryTable = ({ store }) => {
   const inventory = useSelector((state) => state.inventory.inventory);
   const [pageNumber, setPageNumber] = useState(1);
 
+  const [inventoryChanged, setInventoryChanged] = useState(false);
+
+  useEffect(() => {
+    setInventoryChanged(true);
+  }, [inventory]);
+
   const dispatch = useDispatch();
   useEffect(() => {
-    if (store && store._id) {
+    if (store && store._id && inventoryChanged) {
       console.log("working working");
       const fetchInventory = async () => {
         try {
           console.log(store);
           const storeId = store._id;
           await dispatch(getInventory({ storeId, pageNumber }));
+          setInventoryChanged(false);
         } catch (error) {
           console.log(error);
         }
@@ -24,7 +31,7 @@ const InventoryTable = ({ store }) => {
 
       fetchInventory();
     }
-  }, [dispatch, store, pageNumber]);
+  }, [dispatch, store, pageNumber, inventoryChanged]);
   return (
     <div className="container mx-auto">
       <div className="overflow-x-auto flex mt-4">
