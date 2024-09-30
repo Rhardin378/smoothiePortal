@@ -121,13 +121,15 @@ exports.getTruckOrdersByUser = async (req, res, next) => {
         $lt: new Date(date.getTime() + 24 * 60 * 60 * 1000), // Adds one day to the date) },
       };
     }
-    const truck_orders = await TruckOrder.find(query).populate({
-      path: "purchaseOrder",
-      populate: {
-        path: "product",
-        model: "product",
-      },
-    });
+    const truck_orders = await TruckOrder.find(query)
+      .populate({
+        path: "purchaseOrder",
+        populate: {
+          path: "product",
+          model: "product",
+        },
+      })
+      .populate({ path: "user", model: "user" });
 
     if (!truck_orders) {
       res.status(404).send({ message: "No truck orders found" });
