@@ -59,7 +59,7 @@ exports.createTruckOrder = async (req, res, next) => {
     user.truckOrders.push(truckOrder);
     await user.save();
 
-    res.send({ message: "Order created successfully" });
+    res.send({ truckOrder: truckOrder, message: "Order created successfully" });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "Internal Server Error" });
@@ -126,17 +126,22 @@ exports.getTruckOrdersByUser = async (req, res, next) => {
         path: "purchaseOrder",
         populate: {
           path: "product",
-          model: "product",
+          model: "product", // Ensure this matches the model name for your products
         },
       })
-      .populate({ path: "user", model: "user" });
+      .populate("user"); // Assuming user is a direct reference in TruckOrder
+    // Assuming user is a direct reference in TruckOrder
+
+    // FIX THIS POPULATE
+
+    const count = await TruckOrder.countDocuments(query);
 
     if (!truck_orders) {
       res.status(404).send({ message: "No truck orders found" });
       res.end();
     }
 
-    res.status(200).send(truck_orders);
+    res.status(200).send({ truck_orders, count: count });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "Internal Server Error" });

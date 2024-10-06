@@ -27,7 +27,8 @@ exports.currentUser = async (req, res) => {
     token: tokenForUser(user),
     name: user.name,
     role: user.role,
-    store: user.store, // Populated store details
+    store: user.store,
+    userId: user._id, // Populated store details
   };
 
   res.send(userDetails);
