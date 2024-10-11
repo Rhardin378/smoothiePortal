@@ -61,6 +61,7 @@ const authSlice = createSlice({
   initialState: {
     authenticated: !isServer ? localStorage.getItem("token") : "",
     errorMessage: "",
+    userId: null,
     email: null,
     name: null,
     role: null,
@@ -92,6 +93,7 @@ const authSlice = createSlice({
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.authenticated = action.payload.token;
+        state.userId = action.payload.userId;
         state.email = action.payload.email || null;
         state.name = action.payload.name;
         state.role = action.payload.role;

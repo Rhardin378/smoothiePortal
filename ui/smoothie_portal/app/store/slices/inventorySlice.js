@@ -152,7 +152,7 @@ const inventorySLice = createSlice({
     builder
       .addCase(getInventory.fulfilled, (state, action) => {
         state.inventory = action.payload.inventory;
-
+        state.status = "succeeded";
         state.productNameQuery = action.meta.arg.productName || ""; // Update productNameQuery
         state.count = action.payload.count;
       })
@@ -207,6 +207,7 @@ const inventorySLice = createSlice({
       .addCase(editInventoryItem.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        state.status = "failed";
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.loading = false;

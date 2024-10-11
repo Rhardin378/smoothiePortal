@@ -10,6 +10,7 @@ const prePopulateOrder = async (products, truckOrder) => {
     let populatedProducts = [];
     for (const product of products) {
       const neededCount = product.neededWeekly - product.inStock;
+
       if (neededCount > 0) {
         const productToOrder = new ProductToOrder({
           name: product.name,
@@ -121,7 +122,7 @@ exports.getTruckOrdersByUser = async (req, res, next) => {
         $lt: new Date(date.getTime() + 24 * 60 * 60 * 1000), // Adds one day to the date) },
       };
     }
-    const truck_orders = await TruckOrder.find(query)
+    const truckOrders = await TruckOrder.find(query)
       .populate({
         path: "purchaseOrder",
         populate: {
@@ -136,12 +137,12 @@ exports.getTruckOrdersByUser = async (req, res, next) => {
 
     const count = await TruckOrder.countDocuments(query);
 
-    if (!truck_orders) {
+    if (!truckOrders) {
       res.status(404).send({ message: "No truck orders found" });
       res.end();
     }
 
-    res.status(200).send({ truck_orders, count: count });
+    res.status(200).send({ truckOrders, count: count });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "Internal Server Error" });
@@ -154,7 +155,13 @@ exports.getSingleTruckOrder = async (req, res, next) => {
   try {
     const truckOrderId = req.params.truckOrderId;
 
-    const truckOrder = await TruckOrder.findById(truckOrderId);
+    const truckOrder = await TruckOrder.findById(truckOrderId).populate({
+      path: "purchaseOrder",
+      populate: {
+        path: "product",
+        model: "product", // Ensure this matches the model name for your products
+      },
+    });
 
     if (!truckOrder) {
       res.status(404).send({ message: "No truck order with that Id found." });
