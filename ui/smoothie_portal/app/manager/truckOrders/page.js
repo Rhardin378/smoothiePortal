@@ -9,15 +9,17 @@ import { createTruckOrder } from "../../store/slices/truckOrdersSlice";
 
 const TruckOrders = () => {
   const storeId = useSelector((state) => state.auth.store._id);
+  const truckOrderId = useSelector((state) => state.truckOrders.truckOrderId);
   const router = useRouter();
 
   const dispatch = useDispatch();
 
-  const createNewTruckOrder = () => {
+  const createNewTruckOrder = async () => {
     try {
-      dispatch(createTruckOrder({ storeId: storeId }));
-      console.log("push should work");
-      router.push("/manager/truckOrders/edit");
+      await dispatch(createTruckOrder({ storeId: storeId })).then(() => {
+        router.push(`/manager/truckOrders/edit/
+${truckOrderId}`);
+      });
     } catch (error) {
       console.error("Failed to navigate:", error);
     }

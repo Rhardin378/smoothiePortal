@@ -51,7 +51,7 @@ const TruckOrderTable = () => {
               </th>
 
               <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white">
-                Last Updated
+                Date Placed
               </th>
               <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white"></th>
               <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white"></th>

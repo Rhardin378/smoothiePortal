@@ -97,9 +97,11 @@ exports.addProductToOrder = async (req, res, next) => {
     await product.save();
     truckOrder.purchaseOrder.push(product._id);
     await truckOrder.save();
-    res
-      .status(201)
-      .send({ message: "product added to truck order", alert: alert });
+    res.status(201).send({
+      message: "product added to truck order",
+      productToOrder: product,
+      alert: alert,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "Internal Server Error" });
@@ -166,6 +168,14 @@ exports.getSingleTruckOrder = async (req, res, next) => {
     if (!truckOrder) {
       res.status(404).send({ message: "No truck order with that Id found." });
     }
+    // Sort the purchaseOrder array based on product.category
+    // MongoDb does not support nested sorting
+
+    truckOrder.purchaseOrder.sort((a, b) => {
+      if (a.product.category < b.product.category) return -1;
+      if (a.product.category > b.product.category) return 1;
+      return 0;
+    });
 
     res.status(200).send(truckOrder);
   } catch (err) {
@@ -200,10 +210,10 @@ exports.updateTruckOrder = async (req, res, next) => {
 exports.updateProductToOrder = async (req, res, next) => {
   try {
     const productToOrderId = req.params.productId;
-
+    const { count } = req.body;
     const productToOrder = await ProductToOrder.findByIdAndUpdate(
       productToOrderId,
-      req.body,
+      count,
       { new: true }
     );
 

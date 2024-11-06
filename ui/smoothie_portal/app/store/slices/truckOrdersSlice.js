@@ -5,7 +5,6 @@ import {
   isRejectedWithValue,
 } from "@reduxjs/toolkit";
 import axios from "axios";
-import { act } from "react";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -128,7 +127,7 @@ const truckOrderSlice = createSlice({
       })
       .addCase(getTruckOrderById.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.singleTruckOrder = action.payload.truckOrder;
+        state.singleTruckOrder = action.payload;
       })
       .addCase(getTruckOrderById.pending, (state, action) => {
         state.status = "Pending";
