@@ -7,14 +7,12 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getTruckOrderById } from "../../../../store/slices/truckOrdersSlice";
 import ProductToOrderTable from "../../../../components/truckOrder/productToOrderTable";
-import Link from "next/link";
 
 const EditTruckOrderView = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.userId);
   const truckOrder = useSelector((state) => state.truckOrders.singleTruckOrder);
-  const { purchaseOrder } = truckOrder || {};
   // setup pagination using useState
   const [productCount, setProductCount] = useState(0);
 

@@ -213,7 +213,7 @@ exports.updateProductToOrder = async (req, res, next) => {
     const { count } = req.body;
     const productToOrder = await ProductToOrder.findByIdAndUpdate(
       productToOrderId,
-      count,
+      { count },
       { new: true }
     );
 

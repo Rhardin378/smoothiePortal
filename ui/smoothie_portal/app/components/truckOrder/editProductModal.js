@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
+
 import {
-  editInventoryItem,
-  getInventory,
-  getSingleProduct,
-} from "../../store/slices/inventorySlice";
+  getTruckOrderById,
+  updateProductToOrder,
+} from "../../store/slices/truckOrdersSlice";
 import store from "@/app/store/configureStore";
 
 const EditProductModal = ({
@@ -24,16 +24,19 @@ const EditProductModal = ({
 
   const dispatch = useDispatch();
 
+  const truckOrderId = useSelector(
+    (state) => state.truckOrders.singleTruckOrder._id
+  );
+
+  const userId = useSelector((state) => state.auth.userId);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   console.log("productID:", productId);
 
-  const [formData, setFormData] = useState({
-    count: 0,
-  });
+  const errorMessage = useSelector((state) => state.inventory.errorMessage);
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
-  const storeId = useSelector((state) => state.auth.store._id);
 
   const productSchema = Yup.object().shape({
     count: Yup.number().required(),
@@ -63,12 +66,15 @@ const EditProductModal = ({
 
   const onSubmit = async (data) => {
     try {
-      const formData = { count };
-      console.log(formData);
+      const { count } = data;
+      const formData = { count, userId, truckOrderId, productId };
+      console.log("submitted data:", formData);
       // where edit will be added
-      await dispatch(editInventoryItem(formData));
-      await dispatch(getInventory({ storeId, pageNumber })).then(() =>
-        closeModal()
+      await dispatch(updateProductToOrder(formData));
+      await dispatch(getTruckOrderById({ id: truckOrderId, userId })).then(
+        () => {
+          closeModal();
+        }
       );
     } catch (error) {
       console.error(error);
@@ -123,11 +129,11 @@ const EditProductModal = ({
             </div>
             {/* Modal body */}
             <div className="p-4 md:p-5 space-y-4">
-              {/* {errorMessage && (
+              {errorMessage && (
                 <div className="text-red-500 text-center font-bold">
                   <p> {errorMessage} </p> <p> error:</p>
                 </div>
-              )} */}
+              )}
 
               <form
                 onSubmit={handleSubmit(onSubmit)}
@@ -194,7 +200,7 @@ const EditProductModal = ({
                   id="inStock"
                   name="inStock"
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm cursor-not-allowed"
-                  {...register("inStock", {})}
+                  {...register("inStock", { required: true })}
                 />
                 {errors.inStock?.message}
 

@@ -31,7 +31,7 @@ export const getAllTruckOrders = createAsyncThunk(
     }
   }
 );
-
+// async thunk for getting a single truck Order
 export const getTruckOrderById = createAsyncThunk(
   "truckOrders/getTruckOrderById",
   async ({ id, userId }, { rejectWithValue }) => {
@@ -55,6 +55,8 @@ export const getTruckOrderById = createAsyncThunk(
     }
   }
 );
+//async thunk for adding an order
+
 export const createTruckOrder = createAsyncThunk(
   "truckOrders/createTruckorder",
   async ({ storeId }, { rejectWithValue }) => {
@@ -79,9 +81,30 @@ export const createTruckOrder = createAsyncThunk(
   }
 );
 
-//async thunk for adding an order
-
 //async thunk for editing an order
+export const updateProductToOrder = createAsyncThunk(
+  "truckOrders/editProductToOrder",
+  async ({ userId, truckOrderId, productId, count }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: "Bearer " + window.localStorage.getItem("token"),
+        },
+      };
+      const updatedCount = { count: count };
+      const response = axios.put(
+        `${BASE_URL}users/${userId}/truckOrders/${truckOrderId}/productsToOrder/${productId}`,
+        updatedCount,
+        config
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error(err);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const truckOrderSlice = createSlice({
   name: "TruckOrders",
@@ -136,6 +159,34 @@ const truckOrderSlice = createSlice({
       .addCase(getTruckOrderById.rejected, (state, action) => {
         state.status = "failed";
         state.errorMessage = action.payload || "failed to fetch truck order";
+      })
+      .addCase(updateProductToOrder.fulfilled, (state, action) => {
+        state.status = "succeeded";
+
+        if (action.payload && action.payload.productToOrder) {
+          // find the object I'm updating and replace it with the new object
+          const updatedProductId = action.payload.productToOrder._id;
+          const productIndex = state.singleTruckOrder.purchaseOrder.findIndex(
+            (product) => product._id === updatedProductId
+          );
+          if (productIndex !== -1) {
+            state.singleTruckOrder.purchaseOrder[productIndex] =
+              action.payload.productToOrder;
+          } else {
+            state.error = "Product not found in truck Order";
+          }
+        } else {
+          state.error = "Invalid payload structure";
+        }
+      })
+      .addCase(updateProductToOrder.pending, (state, action) => {
+        state.status = "Pending";
+        state.errorMessage = null;
+      })
+      .addCase(updateProductToOrder.rejected, (state, action) => {
+        state.status = "failed";
+        state.errorMessage =
+          action.payload || "failed to update product in truck order";
       });
   },
 });
