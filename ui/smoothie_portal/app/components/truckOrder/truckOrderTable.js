@@ -4,15 +4,18 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import TruckOrderTableItem from "./truckOrderTableItem";
+import TruckOrderPageNavigation from "./truckOrderPageNavigation";
 import {
   getAllTruckOrders,
   selectTruckOrdersWithTotalCases,
 } from "../../store/slices/truckOrdersSlice";
 
 const TruckOrderTable = () => {
+  const userId = useSelector((state) => state.auth.userId);
   const truckOrders = useSelector(selectTruckOrdersWithTotalCases);
   console.log(truckOrders);
-  const userId = useSelector((state) => state.auth.userId);
+  const [pageNumber, setPageNumber] = useState(1);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,7 +26,7 @@ const TruckOrderTable = () => {
       try {
         const userOrders = userId;
         console.log("Fetching truck orders for user:", userOrders);
-        await dispatch(getAllTruckOrders({ userId }));
+        await dispatch(getAllTruckOrders({ userId, pageNumber }));
       } catch (error) {
         console.log("Error fetching truck orders:", error);
       }
@@ -32,7 +35,7 @@ const TruckOrderTable = () => {
     if (userId) {
       fetchTruckOrders();
     }
-  }, [dispatch, userId]);
+  }, [dispatch, userId, pageNumber]);
   return (
     <div className="container mx-auto">
       <div className="overflow-x-auto flex mt-4">
@@ -71,6 +74,10 @@ const TruckOrderTable = () => {
           </tbody>
         </table>
       </div>
+      <TruckOrderPageNavigation
+        setPageNumber={setPageNumber}
+        currentPage={pageNumber}
+      />
     </div>
   );
 };

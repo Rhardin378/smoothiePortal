@@ -24,9 +24,22 @@ const DeleteItemModal = ({ productId, storeId }) => {
     <>
       <button
         onClick={openModal}
-        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+        className="flex items-center justify-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
       >
-        &#x2716; {/* Unicode character for a big red X */}
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
       </button>
 
       {isModalOpen && (
@@ -35,7 +48,7 @@ const DeleteItemModal = ({ productId, storeId }) => {
           data-modal-backdrop="static"
           tabIndex="-1"
           aria-hidden="true"
-          className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
+          className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10"
         >
           <div className="relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700">
             {/* Modal header */}

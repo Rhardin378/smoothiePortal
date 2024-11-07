@@ -111,19 +111,14 @@ exports.addProductToOrder = async (req, res, next) => {
 //controller fucktion to get all truck orders that a user has
 exports.getTruckOrdersByUser = async (req, res, next) => {
   try {
-    let date;
-
-    if (req.query.date) {
-      date = new Date(req.query.date);
-    }
     const query = { user: req.params.userId };
+    const { pageNumber } = req.query;
 
-    if (date !== undefined) {
-      query.date = {
-        $gte: date,
-        $lt: new Date(date.getTime() + 24 * 60 * 60 * 1000), // Adds one day to the date) },
-      };
-    }
+    // Default values for pagination
+    const truckOrdersPerPage = 10;
+    const page = parseInt(pageNumber, 10) || 1;
+    const skip = (page - 1) * truckOrdersPerPage;
+
     const truckOrders = await TruckOrder.find(query)
       .populate({
         path: "purchaseOrder",
@@ -132,10 +127,9 @@ exports.getTruckOrdersByUser = async (req, res, next) => {
           model: "product", // Ensure this matches the model name for your products
         },
       })
-      .populate("user"); // Assuming user is a direct reference in TruckOrder
-    // Assuming user is a direct reference in TruckOrder
-
-    // FIX THIS POPULATE
+      .populate("user")
+      .skip(skip)
+      .limit(truckOrdersPerPage);
 
     const count = await TruckOrder.countDocuments(query);
 
@@ -144,7 +138,7 @@ exports.getTruckOrdersByUser = async (req, res, next) => {
       res.end();
     }
 
-    res.status(200).send({ truckOrders, count: count });
+    res.status(200).send({ truckOrders, count: count, page: page });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "Internal Server Error" });

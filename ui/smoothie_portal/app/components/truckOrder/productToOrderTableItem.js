@@ -4,6 +4,7 @@ import moment from "moment";
 import EditProductModal from "./editProductModal";
 
 const ProductToOrderTableItem = ({
+  editable,
   productId,
   productName,
   count,
@@ -46,14 +47,16 @@ const ProductToOrderTableItem = ({
 
       <td className="py-3  border-b border-gray-200 text-center text-sm text-gray-700"></td>
       <td className="py-3 px-4 border-b border-gray-200 text-center text-sm font-bold text-gray-700">
-        <EditProductModal
-          productName={productName}
-          count={count}
-          inStock={inStock}
-          neededWeekly={neededWeekly}
-          units={units}
-          productId={productId}
-        />
+        {editable && (
+          <EditProductModal
+            productName={productName}
+            count={count}
+            inStock={inStock}
+            neededWeekly={neededWeekly}
+            units={units}
+            productId={productId}
+          />
+        )}
         {/* edit form will need a productId, name, and count passed to it */}
       </td>
 

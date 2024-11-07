@@ -33,10 +33,21 @@ const EditTruckOrderView = () => {
       <div className="flex-col w-3/4 mx-auto mt-3">
         <UserPanel />
         <div className="text-3xl mt-3 py-2 font-mono font-bold">
-          <h1>Truck Order &gt; {formattedId(id)} </h1>
+          <h1>Truck Order &gt; Edit &gt; {formattedId(id)} </h1>
+        </div>
+        <div className="flex items-center   py-2">
+          <button
+            onClick={() => {
+              console.log("hello");
+            }}
+            className="flex  items-center border border-transparent hover:border-2 hover:border-black hover:bg-red-600 hover:text-white font-bold py-1 px-2 rounded"
+          >
+            <span className="text-2xl mr-2">&#x2b;</span>
+            Add Product to Order
+          </button>
         </div>
         <div className="flex-col space-x-4 mb-4">
-          <ProductToOrderTable singleTruckOrderId={id} />
+          <ProductToOrderTable editable={true} singleTruckOrderId={id} />
 
           {/* <Link href={`/manager/truckOrders/`}>
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

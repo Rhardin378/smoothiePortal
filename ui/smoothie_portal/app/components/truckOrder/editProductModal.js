@@ -96,13 +96,13 @@ const EditProductModal = ({
           data-modal-backdrop="static"
           tabIndex="-1"
           aria-hidden="true"
-          className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
+          className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10"
         >
           <div className="relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700">
             {/* Modal header */}
             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
               <h3 className="text-center text-xl font-bold text-red-900 mb-4">
-                Edit Product
+                Edit Product Count
               </h3>
               <button
                 type="button"

@@ -38,7 +38,7 @@ const EditTruckOrderView = () => {
           <h1>Truck Order &gt; {formattedId(id)} </h1>
         </div>
         <div className="flex-col space-x-4 mb-4">
-          <ProductToOrderTable singleTruckOrderId={id} />
+          <ProductToOrderTable editable={false} singleTruckOrderId={id} />
 
           {/* <Link href={`/manager/truckOrders/`}>
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

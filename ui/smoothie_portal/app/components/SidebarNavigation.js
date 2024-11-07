@@ -40,11 +40,6 @@ const SidebarNavigation = () => {
       {renderStore()}
 
       <ul className="flex flex-col space-y-6 mx-6 p-4 text-xl">
-        {/* <li>
-            <Link href="/employee/smoothie-menu" className="hover:text-gray-300">
-              Smoothie Menu
-            </Link>
-          </li> */}
         <li>
           <Link href="/manager/dashboard" className="hover:text-gray-300">
             Dashboard

@@ -12,11 +12,14 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const getAllTruckOrders = createAsyncThunk(
   "truckOrders/getTruckOrders",
-  async ({ userId }, { rejectWithValue }) => {
+  async ({ userId, pageNumber = 1 }, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
           Authorization: "Bearer " + window.localStorage.getItem("token"),
+        },
+        params: {
+          pageNumber: pageNumber,
         },
       };
       const response = await axios.get(
@@ -122,6 +125,7 @@ const truckOrderSlice = createSlice({
       .addCase(getAllTruckOrders.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.truckOrders = action.payload.truckOrders;
+        state.count = action.payload.count;
 
         state.count = action.payload.count;
       })

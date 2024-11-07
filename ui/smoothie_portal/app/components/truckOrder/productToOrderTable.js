@@ -8,7 +8,7 @@ import ProductToOrderTableItem from "./productToOrderTableItem";
 import ProductToOrderPageNavigation from "./productToOrderPageNavigation";
 import next from "next";
 
-const ProductToOrderTable = ({ singleTruckOrderId }) => {
+const ProductToOrderTable = ({ editable, singleTruckOrderId }) => {
   const [page, setPage] = useState(1);
   const [currentProducts, setCurrentProducts] = useState([]);
   const [productCount, setProductCount] = useState(0);
@@ -114,6 +114,7 @@ const ProductToOrderTable = ({ singleTruckOrderId }) => {
                     neededWeekly={product.product?.neededWeekly ?? "N/A"}
                     units={product.product?.units ?? "cases"}
                     date={product.lastUpdated}
+                    editable={editable}
                   />
                 );
               })}
