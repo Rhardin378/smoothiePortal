@@ -42,7 +42,7 @@ const InventoryTableItem = ({
         />
       </td>
       <td className="py-3  border-b border-gray-200 text-center text-sm text-gray-700">
-        <DeleteItemModal productId={productId} storeId={storeId} />
+        <DeleteItemModal productId={productId} type={"inventory"} />
       </td>
     </tr>
   );

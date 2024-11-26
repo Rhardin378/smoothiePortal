@@ -1,20 +1,39 @@
 "use client";
 import React, { useState } from "react";
 import { deleteProduct } from "../../store/slices/inventorySlice";
+import {
+  deleteProductToOrder,
+  getTruckOrderById,
+} from "../../store/slices/truckOrdersSlice";
 import { useSelector, useDispatch } from "react-redux";
 
-const DeleteItemModal = ({ productId, storeId }) => {
+const DeleteItemModal = ({ productId, type }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const storeId = useSelector((state) => state.auth.store._id);
+  const truckOrderId = useSelector(
+    (state) => state.truckOrders.singleTruckOrder._id
+  );
+  const userId = useSelector((state) => state.auth.userId);
   const dispatch = useDispatch();
   const errorMessage = useSelector((state) => state.inventory.errorMessage);
   console.log(productId);
+
   const deleteAndCloseModal = async () => {
     try {
-      await dispatch(deleteProduct({ id: productId, storeId: storeId })).then(
-        () => closeModal()
-      );
+      const action =
+        type === "inventory" ? deleteProduct : deleteProductToOrder;
+      const data =
+        type === "inventory"
+          ? { id: productId, storeId: storeId }
+          : { userId, truckOrderId: truckOrderId, productId: productId };
+      // if type is inventory dispatch deleteProduct
+      await dispatch(action(data));
+      if (type !== "inventory") {
+        await dispatch(getTruckOrderById({ id: truckOrderId, userId }));
+      }
+      closeModal();
     } catch (error) {
       console.error(error);
     }

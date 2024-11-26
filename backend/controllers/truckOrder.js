@@ -5,6 +5,19 @@ const { TruckOrder } = require("../models/truckOrder");
 const { UserModel } = require("../models/user");
 
 // Function to pre-populate the truck order with products that need to be ordered
+/**
+ * Pre-populates a truck order with products that need to be ordered.
+ *
+ * @param {Array} products - An array of product objects. Each product object should have the properties:
+ *                           - name: {string} The name of the product.
+ *                           - _id: {string} The unique identifier of the product.
+ *                           - neededWeekly: {number} The number of units needed weekly.
+ *                           - inStock: {number} The number of units currently in stock.
+ * @param {Object} truckOrder - The truck order object to be populated. It should have a property:
+ *                              - purchaseOrder: {Array} An array to store the IDs of the products to be ordered.
+ * @returns {Promise<Array>} - A promise that resolves to an array of populated product objects.
+ * @throws {Error} - Throws an error if there is an issue saving the product to order.
+ */
 const prePopulateOrder = async (products, truckOrder) => {
   try {
     let populatedProducts = [];
@@ -85,22 +98,18 @@ exports.addProductToOrder = async (req, res, next) => {
       return res.status(404).send({ message: "Truck order not found" });
     }
 
-    if (!req.body.product) {
-      alert = "Product being added to order may not currently be in inventory";
-    }
-
     const product = new ProductToOrder({
       name: req.body.name,
       count: req.body.count,
+      product: req.body.product,
     });
 
     await product.save();
-    truckOrder.purchaseOrder.push(product._id);
+    truckOrder.purchaseOrder.unshift(product._id);
     await truckOrder.save();
     res.status(201).send({
       message: "product added to truck order",
       productToOrder: product,
-      alert: alert,
     });
   } catch (err) {
     console.error(err);
@@ -128,6 +137,7 @@ exports.getTruckOrdersByUser = async (req, res, next) => {
         },
       })
       .populate("user")
+      .sort({ date: -1 })
       .skip(skip)
       .limit(truckOrdersPerPage);
 
@@ -166,8 +176,8 @@ exports.getSingleTruckOrder = async (req, res, next) => {
     // MongoDb does not support nested sorting
 
     truckOrder.purchaseOrder.sort((a, b) => {
-      if (a.product.category < b.product.category) return -1;
-      if (a.product.category > b.product.category) return 1;
+      if (a.product?.category < b.product?.category) return -1;
+      if (a.product?.category > b.product?.category) return 1;
       return 0;
     });
 
@@ -243,6 +253,7 @@ exports.deleteProductToorder = async (req, res, next) => {
 
     return res.status(200).send({
       message: "product has been deleted from order and reference removed",
+      productToOrderId: productToOrderId,
     });
   } catch (err) {
     console.log(err);

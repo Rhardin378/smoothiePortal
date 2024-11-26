@@ -10,22 +10,30 @@ import { createTruckOrder } from "../../store/slices/truckOrdersSlice";
 const TruckOrders = () => {
   const storeId = useSelector((state) => state.auth.store._id);
   const truckOrderId = useSelector((state) => state.truckOrders.truckOrderId);
+  const isLoading = useSelector((state) => state.truckOrders.status);
   const router = useRouter();
 
   const dispatch = useDispatch();
 
   const createNewTruckOrder = async () => {
     try {
-      await dispatch(createTruckOrder({ storeId: storeId })).then(() => {
-        router.push(`/manager/truckOrders/edit/
-${truckOrderId}`);
-      });
+      const response = await dispatch(createTruckOrder({ storeId: storeId }));
+      const directTruckOrderId = response.payload.truckOrder._id;
+      console.log("directOrderID:", directTruckOrderId);
+
+      router.push(`/manager/truckOrders/edit/
+${directTruckOrderId}`);
     } catch (error) {
       console.error("Failed to navigate:", error);
     }
   };
   return (
     <div className="flex">
+      {isLoading === "Pending" && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-500"></div>
+        </div>
+      )}
       <SidebarNavigation />
       <div className="flex flex-col w-3/4 mx-auto mt-3 ">
         <UserPanel />

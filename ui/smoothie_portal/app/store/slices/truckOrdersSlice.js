@@ -47,7 +47,7 @@ export const getTruckOrderById = createAsyncThunk(
       //   "/users/:userId/truckOrders/:truckOrderId",
 
       const response = await axios.get(
-        `${BASE_URL}/users/${userId}/truckOrders/${id}`,
+        `${BASE_URL}users/${userId}/truckOrders/${id}`,
         config
       );
 
@@ -98,6 +98,62 @@ export const updateProductToOrder = createAsyncThunk(
       const response = axios.put(
         `${BASE_URL}users/${userId}/truckOrders/${truckOrderId}/productsToOrder/${productId}`,
         updatedCount,
+        config
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error(err);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteProductToOrder = createAsyncThunk(
+  "truckOrders/deleteProductToOrder",
+  async ({ userId, truckOrderId, productId }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: "Bearer " + window.localStorage.getItem("token"),
+        },
+      };
+
+      const response = axios.delete(
+        `${BASE_URL}users/${userId}/truckOrders/${truckOrderId}/productsToOrder/${productId}`,
+        config
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error(err);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+//async thunk for editing an order
+export const addProductToOrder = createAsyncThunk(
+  "truckOrders/addProductToOrder",
+  async (
+    { truckOrderId, productId, storeId, count, name },
+    { rejectWithValue }
+  ) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: "Bearer " + window.localStorage.getItem("token"),
+        },
+      };
+      const date = new Date();
+      const product = {
+        name: name,
+        count: count,
+        product: productId,
+        lastUpdated: date,
+      };
+      const response = axios.post(
+        `${BASE_URL}stores/${storeId}/truckOrders/${truckOrderId}/productsToOrder/`,
+        product,
         config
       );
 
@@ -191,6 +247,39 @@ const truckOrderSlice = createSlice({
         state.status = "failed";
         state.errorMessage =
           action.payload || "failed to update product in truck order";
+      })
+      .addCase(addProductToOrder.fulfilled, (state, action) => {
+        state.status = "succeeded";
+      })
+      .addCase(addProductToOrder.pending, (state, action) => {
+        state.status = "Pending";
+        state.errorMessage = null;
+      })
+      .addCase(addProductToOrder.rejected, (state, action) => {
+        state.status = "failed";
+        state.errorMessage =
+          action.payload.message || "failed to create a new truck order";
+      })
+      .addCase(deleteProductToOrder.fulfilled, (state, action) => {
+        state.loading = false;
+
+        state.status = "succeeded";
+
+        // const deletedProductId = action.payload.productToOrderId; // Use the returned ID
+        // state.singleTruckOrder.purchaseOrder =
+        //   state.singleTruckOrder.purchaseOrder.filter(
+        //     (product) => product._id !== deletedProductId
+        //   );
+      })
+
+      .addCase(deleteProductToOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.status = "failed";
+        state.errorMessage = action.payload;
+      })
+      .addCase(deleteProductToOrder.pending, (state, action) => {
+        state.loading = true;
+        state.status = "loading";
       });
   },
 });

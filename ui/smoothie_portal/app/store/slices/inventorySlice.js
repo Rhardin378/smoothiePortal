@@ -36,6 +36,28 @@ export const getInventory = createAsyncThunk(
   }
 );
 
+export const getAllInventory = createAsyncThunk(
+  "inventory/getAllInventory",
+  async ({ storeId }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: "Bearer " + window.localStorage.getItem("token"),
+        },
+      };
+      const response = await axios.get(
+        `${BASE_URL}stores/${storeId}/inventory/all`,
+        config
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response?.data);
+    }
+  }
+);
+
 export const getSingleProduct = createAsyncThunk(
   "inventory/getSingleProduct",
   async ({ storeId, productId }, { rejectWithValue }) => {
@@ -154,6 +176,11 @@ const inventorySLice = createSlice({
         state.inventory = action.payload.inventory;
         state.status = "succeeded";
         state.productNameQuery = action.meta.arg.productName || ""; // Update productNameQuery
+        state.count = action.payload.count;
+      })
+      .addCase(getAllInventory.fulfilled, (state, action) => {
+        state.inventory = action.payload.inventory;
+        state.status = "succeeded";
         state.count = action.payload.count;
       })
 

@@ -24,6 +24,13 @@ router.get(
   storeController.getInventory
 );
 
+router.get(
+  "/stores/:storeId/inventory/all",
+  requireAuth,
+  isManager,
+  storeController.getAllInventory
+);
+
 // GET - Get a single product from a store's inventory
 
 router.get(

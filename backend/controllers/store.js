@@ -102,6 +102,28 @@ exports.getInventory = async (req, res, next) => {
   }
 };
 
+exports.getAllInventory = async (req, res, next) => {
+  try {
+    const storeId = req.params.storeId;
+
+    const store = await Store.findById(storeId);
+
+    const query = { store: storeId };
+
+    if (!store) {
+      return res.status(404).send({ message: "Store not found" });
+    }
+
+    const inventory = await Product.find(query).sort({ lastUpdated: -1 }); // Sort by lastUpdated in descending order
+
+    const totalCount = await Product.countDocuments(query);
+    res.status(200).send({ inventory: inventory, count: totalCount });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
 exports.getSingleProduct = async (req, res, next) => {
   try {
     const storeId = req.params.storeId;

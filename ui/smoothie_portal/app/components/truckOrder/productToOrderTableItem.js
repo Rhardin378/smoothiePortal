@@ -2,6 +2,7 @@
 import React from "react";
 import moment from "moment";
 import EditProductModal from "./editProductModal";
+import DeleteItemModal from "../inventory/deleteItemModal";
 
 const ProductToOrderTableItem = ({
   editable,
@@ -60,7 +61,11 @@ const ProductToOrderTableItem = ({
         {/* edit form will need a productId, name, and count passed to it */}
       </td>
 
-      <td className="py-3  border-b border-gray-200 text-center text-sm text-gray-700"></td>
+      <td className="py-3  border-b border-gray-200 text-center text-sm text-gray-700">
+        {editable && (
+          <DeleteItemModal type={"truckOrder"} productId={productId} />
+        )}
+      </td>
     </tr>
   );
 };

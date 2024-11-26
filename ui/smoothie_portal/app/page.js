@@ -32,6 +32,7 @@ export default function Home() {
   });
 
   const validateSignIn = (signInAttempt) => {
+    console.log(signInAttempt.payload);
     if (signInAttempt.payload && signInAttempt.payload.email) {
       router.push("/manager/dashboard");
     }
@@ -64,7 +65,7 @@ export default function Home() {
             <p> {errorMessage} </p> <p> Invalid Username or Password</p>
           </div>
         )}
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form method="POST" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-6">
             <label
               htmlFor="email"

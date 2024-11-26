@@ -60,11 +60,11 @@ const ProductToOrderTable = ({ editable, singleTruckOrderId }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (singleTruckOrderId && userId) {
+    if (singleTruckOrderId !== "undefined" && userId) {
       console.log("truckOrderId exists");
       dispatch(getTruckOrderById({ id: singleTruckOrderId, userId: userId }));
     }
-  }, [dispatch, singleTruckOrderId]);
+  }, [dispatch, singleTruckOrderId, userId]);
 
   useEffect(() => {
     if (purchaseOrder) {
@@ -98,12 +98,14 @@ const ProductToOrderTable = ({ editable, singleTruckOrderId }) => {
               </th>
               <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white"></th>
               <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white"></th>
+              <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white"></th>
             </tr>
           </thead>
           <tbody>
             {truckOrder &&
               truckOrder.purchaseOrder &&
               currentProducts.map((product) => {
+                console.log(product);
                 return (
                   <ProductToOrderTableItem
                     key={product._id}

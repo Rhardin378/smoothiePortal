@@ -11,7 +11,7 @@ router.post(
   truckOrderController.createTruckOrder
 );
 
-// POST  - Create a productToOrder and add to a truck order (if you want to add a new item not in inventory)
+// POST  - Create a productToOrder and add to a truck order (if you want to add a new item not prepopulated from inventory)
 router.post(
   "/stores/:storeId/truckOrders/:truckOrderId/productsToOrder",
   requireAuth,
