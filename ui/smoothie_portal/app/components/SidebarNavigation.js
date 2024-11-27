@@ -1,7 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUser, signout } from "../store/slices/authSlice";
+import {
+  FaTachometerAlt,
+  FaBoxOpen,
+  FaTruck,
+  FaSignOutAlt,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
+
 const SidebarNavigation = () => {
   const dispatch = useDispatch();
   const authenticated = useSelector((state) => state.auth.authenticated);
@@ -9,9 +18,35 @@ const SidebarNavigation = () => {
   const store = useSelector((state) => state.auth.store);
   const role = useSelector((state) => state.auth.role);
 
-  // The loading state is needed to ensure that the store information is only rendered
-  // once the user data has been fetched. This prevents the renderStore function from
-  // being called with incomplete data during the initial render.
+  const [isOpen, setIsOpen] = useState(false);
+  const sidebarRef = useRef(null);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleClickOutside = (event) => {
+    if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
   const renderStore = () => {
     if (authenticated && store.address && store.address.street) {
       return (
@@ -19,7 +54,7 @@ const SidebarNavigation = () => {
           <h2 className="text-4xl font-bold mb-2">
             Store # {store.storeNumber}
           </h2>
-          <h3 className="text-lg ">{store.address.street}</h3>
+          <h3 className="text-xl">{store.address.street}</h3>
         </div>
       );
     } else {
@@ -32,32 +67,58 @@ const SidebarNavigation = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(fetchUser());
-  }, [dispatch]);
   return (
-    <nav className="w-2/12 h-screen bg-gray-500 text-white flex flex-col flex-shrink-0">
-      {renderStore()}
-
-      <ul className="flex flex-col space-y-6 mx-6 p-4 text-xl">
-        <li>
-          <Link href="/manager/dashboard" className="hover:text-gray-300">
-            Dashboard
-          </Link>
-        </li>
-        <li>
-          <Link href="/manager/inventory" className="hover:text-gray-300">
-            Inventory
-          </Link>
-        </li>
-        <li>
-          <Link href="/manager/truckOrders" className="hover:text-gray-300">
-            Truck Orders
-          </Link>
-        </li>
-        {/* Add more sections as needed */}
-      </ul>
-    </nav>
+    <div>
+      <button
+        className="md:hidden p-4 text-white bg-gray-800"
+        onClick={toggleMenu}
+      >
+        {isOpen ? <FaTimes /> : <FaBars />}
+      </button>
+      <nav
+        ref={sidebarRef}
+        className={`fixed top-0 left-0 w-64 h-screen bg-gray-800 text-white flex flex-col flex-shrink-0 shadow-lg transform ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } transition-transform duration-300 ease-in-out md:relative md:translate-x-0`}
+      >
+        {renderStore()}
+        <ul className="flex flex-col space-y-4 mx-6 p-4 text-2xl">
+          <li onClick={toggleMenu}>
+            <Link href="/manager/dashboard">
+              <div className="flex items-center space-x-3 hover:text-gray-300 cursor-pointer">
+                <FaTachometerAlt />
+                <span>Dashboard</span>
+              </div>
+            </Link>
+          </li>
+          <li onClick={toggleMenu}>
+            <Link href="/manager/inventory">
+              <div className="flex items-center space-x-3 hover:text-gray-300 cursor-pointer">
+                <FaBoxOpen />
+                <span>Inventory</span>
+              </div>
+            </Link>
+          </li>
+          <li onClick={toggleMenu}>
+            <Link href="/manager/truckOrders">
+              <div className="flex items-center space-x-3 hover:text-gray-300 cursor-pointer">
+                <FaTruck />
+                <span>Truck Orders</span>
+              </div>
+            </Link>
+          </li>
+          <li onClick={toggleMenu}>
+            <button
+              onClick={() => dispatch(signout())}
+              className="flex items-center space-x-3 hover:text-gray-300 w-full text-left"
+            >
+              <FaSignOutAlt />
+              <span>Sign Out</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
   );
 };
 

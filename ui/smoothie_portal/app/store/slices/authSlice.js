@@ -72,7 +72,12 @@ const authSlice = createSlice({
     signout: (state) => {
       !isServer && localStorage.removeItem("token");
       state.authenticated = "";
+      state.userId = null;
       state.email = null;
+      state.name = null;
+      state.role = null;
+      state.store = {};
+      state.truckOrders = null;
     },
   },
   extraReducers: (builder) => {
