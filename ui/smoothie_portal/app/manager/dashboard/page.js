@@ -14,6 +14,7 @@ import {
   getAllTruckOrders,
   selectTruckOrdersWithTotalCases,
 } from "../../store/slices/truckOrdersSlice";
+import Unauthorized from "../../components/unauthorized";
 
 const Dashboard = () => {
   const authenticated = useSelector((state) => state.auth.authenticated);
@@ -51,34 +52,40 @@ const Dashboard = () => {
     fetchData();
   }, [dispatch, storeId, userId]);
 
-  return (
-    <div className="flex">
-      <SidebarNavigation />
-      <div className="flex flex-col w-3/4 mx-auto mt-3">
-        <UserPanel />
-        <div className="text-3xl mt-3 py-2 font-mono font-bold">Dashboard</div>
-        <div className="container mx-auto">
-          <div className="flex flex-wrap gap-6">
-            <GoodsStatus
-              products={filterProductsByCategory(inventory, "dry")}
-              type={"Dry Goods"}
-            />
-            <GoodsStatus
-              products={filterProductsByCategory(inventory, "refrigerated")}
-              type={"Refrigerated Goods"}
-            />
-            <GoodsStatus
-              products={filterProductsByCategory(inventory, "frozen")}
-              type={"Frozen Goods"}
-            />
-            <TruckOrderTracker day={truckOrderDay} />
-            <PreviousTruckOrderChart truckOrder={mostRecentTruckOrder} />
-            <InventoryChart products={inventory} />
+  if (authenticated) {
+    return (
+      <div className="flex">
+        <SidebarNavigation />
+        <div className="flex flex-col w-3/4 mx-auto mt-3">
+          <UserPanel />
+          <div className="text-3xl mt-3 py-2 font-mono font-bold">
+            Dashboard
+          </div>
+          <div className="container mx-auto">
+            <div className="flex flex-wrap gap-6">
+              <GoodsStatus
+                products={filterProductsByCategory(inventory, "dry")}
+                type={"Dry Goods"}
+              />
+              <GoodsStatus
+                products={filterProductsByCategory(inventory, "refrigerated")}
+                type={"Refrigerated Goods"}
+              />
+              <GoodsStatus
+                products={filterProductsByCategory(inventory, "frozen")}
+                type={"Frozen Goods"}
+              />
+              <TruckOrderTracker day={truckOrderDay} />
+              <PreviousTruckOrderChart truckOrder={mostRecentTruckOrder} />
+              <InventoryChart products={inventory} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return <Unauthorized />;
+  }
 };
 
 export default Dashboard;

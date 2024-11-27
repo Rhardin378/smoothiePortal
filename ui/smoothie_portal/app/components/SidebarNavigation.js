@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUser, signout } from "../store/slices/authSlice";
 import {
@@ -17,7 +18,7 @@ const SidebarNavigation = () => {
   const name = useSelector((state) => state.auth.name);
   const store = useSelector((state) => state.auth.store);
   const role = useSelector((state) => state.auth.role);
-
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef(null);
 
@@ -29,6 +30,11 @@ const SidebarNavigation = () => {
     if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
       setIsOpen(false);
     }
+  };
+
+  const handleSignOut = async () => {
+    await dispatch(signout());
+    router.push("/");
   };
 
   useEffect(() => {
@@ -82,7 +88,7 @@ const SidebarNavigation = () => {
         } transition-transform duration-300 ease-in-out md:relative md:translate-x-0`}
       >
         {renderStore()}
-        <ul className="flex flex-col space-y-4 mx-6 p-4 text-2xl">
+        <ul className="flex flex-col space-y-4 mx-6 p-4 text-xl">
           <li onClick={toggleMenu}>
             <Link href="/manager/dashboard">
               <div className="flex items-center space-x-3 hover:text-gray-300 cursor-pointer">
@@ -109,7 +115,7 @@ const SidebarNavigation = () => {
           </li>
           <li onClick={toggleMenu}>
             <button
-              onClick={() => dispatch(signout())}
+              onClick={handleSignOut}
               className="flex items-center space-x-3 hover:text-gray-300 w-full text-left"
             >
               <FaSignOutAlt />

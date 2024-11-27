@@ -8,6 +8,7 @@ import InventorySearchBar from "../../components/inventory/inventorySearch";
 import UserPanel from "../../components/userPanel";
 import InventoryTable from "../../components/inventory/inventoryTable";
 import AddItemModal from "../../components/inventory/addItemModal";
+import Unauthorized from "../../components/unauthorized";
 
 const Inventory = () => {
   const dispatch = useDispatch();
@@ -28,31 +29,34 @@ const Inventory = () => {
 
     fetchData();
   }, [dispatch]);
-
-  return (
-    <div className="flex">
-      <SidebarNavigation />
-      <div className="flex flex-col w-3/4 mx-auto ">
-        <div className="flex justify-between items-center  py-3">
-          <InventorySearchBar
-            storeId={store._id}
+  if (authenticated) {
+    return (
+      <div className="flex">
+        <SidebarNavigation />
+        <div className="flex flex-col w-3/4 mx-auto ">
+          <div className="flex justify-between items-center  py-3">
+            <InventorySearchBar
+              storeId={store._id}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+            />
+            <UserPanel />
+          </div>
+          <div className="text-3xl   py-2 font-mono font-bold">Inventory</div>
+          <div className="flex items-center   py-2">
+            <AddItemModal store={store} />
+          </div>
+          <InventoryTable
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
+            store={store}
           />
-          <UserPanel />
         </div>
-        <div className="text-3xl   py-2 font-mono font-bold">Inventory</div>
-        <div className="flex items-center   py-2">
-          <AddItemModal store={store} />
-        </div>
-        <InventoryTable
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          store={store}
-        />
       </div>
-    </div>
-  );
+    );
+  } else {
+    return <Unauthorized />;
+  }
 };
 
 export default Inventory;
