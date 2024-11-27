@@ -14,7 +14,6 @@ const AddItemModal = ({ store }) => {
   const closeModal = () => setIsModalOpen(false);
 
   const errorMessage = useSelector((state) => state.inventory.errorMessage);
-  console.log(errorMessage);
 
   const storeId = store._id;
 
@@ -39,7 +38,6 @@ const AddItemModal = ({ store }) => {
   const onSubmit = async (data) => {
     try {
       const formData = { storeId, ...data };
-      console.log(formData);
       await dispatch(addItemToInventory(formData));
       closeModal();
     } catch (error) {

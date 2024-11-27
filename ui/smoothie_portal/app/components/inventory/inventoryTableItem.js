@@ -15,7 +15,7 @@ const InventoryTableItem = ({
   storeId,
 }) => {
   const date = moment(lastUpdated).format("L");
-  console.log(date);
+
   return (
     <tr className="odd:bg-gray-100 even:bg-white hover:bg-gray-200">
       <td className="py-3 px-4 border-b border-gray-200 text-center text-sm font-bold text-gray-700">

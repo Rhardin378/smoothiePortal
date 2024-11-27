@@ -26,7 +26,6 @@ export const signin = createAsyncThunk(
     try {
       const response = await axios.post(`${BASE_URL}auth/signin`, formProps);
 
-      console.log(response, response.data.email);
       !isServer && localStorage.setItem("token", response.data.token);
 
       return response.data;
@@ -45,7 +44,6 @@ export const fetchUser = createAsyncThunk(
       },
     };
     try {
-      console.log(config);
       const response = await axios.get(`${BASE_URL}/auth/current_user`, config);
       !isServer && localStorage.setItem("token", response.data.token);
       return response.data;

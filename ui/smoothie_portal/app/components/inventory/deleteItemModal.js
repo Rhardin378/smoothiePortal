@@ -18,7 +18,6 @@ const DeleteItemModal = ({ productId, type }) => {
   const userId = useSelector((state) => state.auth.userId);
   const dispatch = useDispatch();
   const errorMessage = useSelector((state) => state.inventory.errorMessage);
-  console.log(productId);
 
   const deleteAndCloseModal = async () => {
     try {

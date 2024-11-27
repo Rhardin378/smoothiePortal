@@ -5,7 +5,6 @@ import Link from "next/link";
 // import DeleteItemModal from "./deleteItemModal";
 const TruckOrderTableItem = ({ id, user, date, cases }) => {
   let formattedDate = moment(date).format("L");
-  console.log(date);
   const formattedId = (id) => id.slice(-7).toUpperCase();
   return (
     <tr className="odd:bg-gray-100 even:bg-white hover:bg-gray-200">

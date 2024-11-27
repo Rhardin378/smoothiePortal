@@ -47,8 +47,6 @@ const AddProductToOrderModal = () => {
   useEffect(() => {
     if (userStoreId) {
       dispatch(getAllInventory({ storeId: userStoreId }));
-
-      console.log("inventory fetched");
     }
   }, [dispatch, userStoreId]);
 
@@ -56,7 +54,6 @@ const AddProductToOrderModal = () => {
     const populatedItem = inventory.find(
       (foundProduct) => foundProduct._id === product
     );
-    console.log("populatedITEM:", populatedItem);
     setSelectedProduct(populatedItem);
     setProductId(product);
   };
@@ -87,7 +84,6 @@ const AddProductToOrderModal = () => {
         count,
         name,
       };
-      console.log("submitted data:", formData);
       // where edit will be added
       await dispatch(addProductToOrder(formData));
 
@@ -99,12 +95,9 @@ const AddProductToOrderModal = () => {
   };
 
   const setProduct = (e) => {
-    console.log("setProduct function called");
     const product = e.target.value;
     setSelectedProduct(product);
     populateSelectedProduct(product);
-
-    console.log(product);
   };
 
   return (

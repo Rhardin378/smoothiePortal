@@ -21,7 +21,6 @@ const PreviousTruckOrderChart = ({ truckOrder }) => {
   // -dry goods: 30
   // -refrigerated goods: 20
   // -frozen goods: 10
-  console.log("truckorderProp:", truckOrder);
 
   const [dryGoods, setDryGoods] = useState(0);
   const [refrigeratedGoods, setRefrigeratedGoods] = useState(0);
@@ -35,8 +34,6 @@ const PreviousTruckOrderChart = ({ truckOrder }) => {
   // useEffect that filters dry / refrigerated / frozen and sets them to the data points
 
   useEffect(() => {
-    console.log("useEffect triggered");
-    console.log("truckOrder:", truckOrder);
     if (truckOrder) {
       const filterCaseAmounts = () => {
         const dryGoods = filterGoods(truckOrder, "dry");

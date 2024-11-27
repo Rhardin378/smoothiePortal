@@ -12,10 +12,7 @@ import { signin } from "./store/slices/authSlice.js";
 
 export default function Home() {
   const errorMessage = useSelector((state) => state.auth.errorMessage);
-  console.log(errorMessage);
 
-  const authenticated = useSelector((state) => state.auth.authenticated);
-  console.log(authenticated);
   const userSchema = Yup.object().shape({
     email: Yup.string().email().required(),
     password: Yup.string().required(),
@@ -32,7 +29,6 @@ export default function Home() {
   });
 
   const validateSignIn = (signInAttempt) => {
-    console.log(signInAttempt.payload);
     if (signInAttempt.payload && signInAttempt.payload.email) {
       router.push("/manager/dashboard");
     }
@@ -42,7 +38,6 @@ export default function Home() {
   const onSubmit = async (data) => {
     try {
       const result = await dispatch(signin(data));
-      console.log(result.payload);
 
       validateSignIn(result);
     } catch (error) {

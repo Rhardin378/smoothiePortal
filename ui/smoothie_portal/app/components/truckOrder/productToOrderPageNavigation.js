@@ -13,8 +13,6 @@ const productToOrderPageNavigation = ({
   const productsPerPage = 10;
   const totalPages = Math.ceil(totalCount / productsPerPage);
 
-  console.log(totalPages);
-
   return (
     <div className="mt-4 flex justify-center items-center">
       {/* Previous Button */}

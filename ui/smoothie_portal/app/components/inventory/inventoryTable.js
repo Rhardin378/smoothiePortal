@@ -22,11 +22,8 @@ const InventoryTable = ({ store, searchTerm }) => {
   // Effect to fetch inventory when inventoryChanged is true
   useEffect(() => {
     if (store && store._id && inventoryChanged) {
-      console.log("working working");
       const fetchInventory = async () => {
         try {
-          console.log(store);
-          console.log("inventory Changed");
           const storeId = store._id;
           await dispatch(
             getInventory({ storeId, pageNumber, productName: searchTerm })
@@ -39,10 +36,8 @@ const InventoryTable = ({ store, searchTerm }) => {
 
       fetchInventory();
     } else if (store && store._id) {
-      console.log("working working");
       const fetchInventory = async () => {
         try {
-          console.log(store);
           const storeId = store._id;
           await dispatch(
             getInventory({ storeId, pageNumber, productName: searchTerm })

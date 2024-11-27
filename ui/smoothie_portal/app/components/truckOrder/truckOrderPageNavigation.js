@@ -8,8 +8,6 @@ const TruckOrderPageNavigation = ({ setPageNumber, currentPage }) => {
     useSelector((state) => state.truckOrders.count) / truckOrdersPerPage
   );
 
-  console.log(totalPages);
-
   return (
     <div className="mt-4 flex justify-center items-center">
       {/* Previous Button */}

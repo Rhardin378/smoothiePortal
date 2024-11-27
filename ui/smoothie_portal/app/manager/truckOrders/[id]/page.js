@@ -18,9 +18,6 @@ const EditTruckOrderView = () => {
 
   // setup pagination using useState
 
-  // console.log("truck Order:", purchaseOrder);
-  // console.log("Count:", purchaseOrder.length);
-
   const formattedId = (id) => id.slice(-7).toUpperCase();
   // const productsPerPage = 10;
   // const totalPages = purchaseOrder.length / productsPerPage;

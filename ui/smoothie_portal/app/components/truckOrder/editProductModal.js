@@ -29,7 +29,6 @@ const EditProductModal = ({
   const userId = useSelector((state) => state.auth.userId);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log("productID:", productId);
 
   const errorMessage = useSelector((state) => state.inventory.errorMessage);
 
@@ -66,7 +65,6 @@ const EditProductModal = ({
     try {
       const { count } = data;
       const formData = { count, userId, truckOrderId, productId };
-      console.log("submitted data:", formData);
 
       await dispatch(updateProductToOrder(formData));
       await dispatch(getTruckOrderById({ id: truckOrderId, userId })).then(

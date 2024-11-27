@@ -17,9 +17,8 @@ const EditItemModal = ({ productId, pageNumber, currentPage }) => {
 
   const dispatch = useDispatch();
   const singleProduct = useSelector((state) => state.inventory.singleProduct);
-  console.log(pageNumber);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log("productID:", productId);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -32,7 +31,6 @@ const EditItemModal = ({ productId, pageNumber, currentPage }) => {
   const closeModal = () => setIsModalOpen(false);
 
   const errorMessage = useSelector((state) => state.inventory.errorMessage);
-  console.log(errorMessage);
 
   const storeId = useSelector((state) => state.auth.store._id);
 
@@ -58,7 +56,6 @@ const EditItemModal = ({ productId, pageNumber, currentPage }) => {
       const fetchSingleProduct = async () => {
         try {
           await dispatch(getSingleProduct({ storeId, productId }));
-          console.log("useEffect");
         } catch (error) {
           console.error(error);
         }
@@ -83,7 +80,6 @@ const EditItemModal = ({ productId, pageNumber, currentPage }) => {
   const onSubmit = async (data) => {
     try {
       const formData = { storeId, productId, ...data };
-      console.log(formData);
       // where edit will be added
       await dispatch(editInventoryItem(formData));
       await dispatch(getInventory({ storeId, pageNumber })).then(() =>

@@ -26,7 +26,6 @@ const TruckOrders = () => {
     try {
       const response = await dispatch(createTruckOrder({ storeId: storeId }));
       const directTruckOrderId = response.payload.truckOrder._id;
-      console.log("directOrderID:", directTruckOrderId);
 
       router.push(`/manager/truckOrders/edit/
 ${directTruckOrderId}`);

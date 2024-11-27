@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 
 const GoodsStatus = ({ products, type }) => {
-  console.log(products);
-
   // if a product quantity  is less than 1/2 of the needed weekly it is low
   // if a product quantity is at 0 it is out
   // else green
@@ -32,8 +30,6 @@ const GoodsStatus = ({ products, type }) => {
     });
     setLowStockProducts(lowStockItems);
     setOutOfStockProducts(outOfStockItems);
-    console.log(lowStockProducts);
-    console.log(outOfStockProducts);
   };
 
   useEffect(() => {

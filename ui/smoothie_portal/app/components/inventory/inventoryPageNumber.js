@@ -10,8 +10,6 @@ const InventoryPageNumber = ({ setPageNumber, currentPage }) => {
     useSelector((state) => state.inventory.count) / productsPerPage
   );
 
-  console.log(totalPages);
-
   return (
     <div className="mt-4 flex justify-center items-center">
       {/* Previous Button */}

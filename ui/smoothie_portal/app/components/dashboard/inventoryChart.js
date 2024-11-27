@@ -31,8 +31,6 @@ const InventoryChart = ({ products }) => {
   };
 
   useEffect(() => {
-    console.log("useEffect triggered");
-    console.log("products:", products);
     if (products) {
       const filterCaseAmounts = () => {
         const dryGoods = filterGoods(products, "dry");

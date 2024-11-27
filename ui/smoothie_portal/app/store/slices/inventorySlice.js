@@ -147,7 +147,6 @@ export const deleteProduct = createAsyncThunk(
           Authorization: "Bearer " + window.localStorage.getItem("token"),
         },
       };
-      console.log(id);
 
       const response = await axios.delete(
         `${BASE_URL}stores/${storeId}/inventory/${id}`,

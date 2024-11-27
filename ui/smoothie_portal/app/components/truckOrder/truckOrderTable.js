@@ -13,19 +13,16 @@ import {
 const TruckOrderTable = () => {
   const userId = useSelector((state) => state.auth.userId);
   const truckOrders = useSelector(selectTruckOrdersWithTotalCases);
-  console.log(truckOrders);
+
   const [pageNumber, setPageNumber] = useState(1);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("useEffect is running");
-    console.log("user._id:", userId);
-
     const fetchTruckOrders = async () => {
       try {
         const userOrders = userId;
-        console.log("Fetching truck orders for user:", userOrders);
+
         await dispatch(getAllTruckOrders({ userId, pageNumber }));
       } catch (error) {
         console.log("Error fetching truck orders:", error);

@@ -22,7 +22,7 @@ const ProductToOrderTable = ({ editable, singleTruckOrderId }) => {
       const totalPages = Math.ceil(
         truckOrder.purchaseOrder.length / productsPerPage
       );
-      console.log("total Pages:", totalPages);
+
       const newPage = prevPage + 1;
       if (newPage > totalPages) {
         return prevPage;
@@ -60,7 +60,6 @@ const ProductToOrderTable = ({ editable, singleTruckOrderId }) => {
 
   useEffect(() => {
     if (singleTruckOrderId !== "undefined" && userId) {
-      console.log("truckOrderId exists");
       dispatch(getTruckOrderById({ id: singleTruckOrderId, userId: userId }));
     }
   }, [dispatch, singleTruckOrderId, userId]);
@@ -104,7 +103,6 @@ const ProductToOrderTable = ({ editable, singleTruckOrderId }) => {
             {truckOrder &&
               truckOrder.purchaseOrder &&
               currentProducts.map((product) => {
-                console.log(product);
                 return (
                   <ProductToOrderTableItem
                     key={product._id}
