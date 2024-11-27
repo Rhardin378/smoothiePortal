@@ -15,9 +15,7 @@ import {
 const SidebarNavigation = () => {
   const dispatch = useDispatch();
   const authenticated = useSelector((state) => state.auth.authenticated);
-  const name = useSelector((state) => state.auth.name);
   const store = useSelector((state) => state.auth.store);
-  const role = useSelector((state) => state.auth.role);
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef(null);

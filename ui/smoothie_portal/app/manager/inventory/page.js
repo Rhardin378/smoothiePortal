@@ -13,9 +13,8 @@ import Unauthorized from "../../components/unauthorized";
 const Inventory = () => {
   const dispatch = useDispatch();
   const authenticated = useSelector((state) => state.auth.authenticated);
-  const name = useSelector((state) => state.auth.name);
+  const isLoading = useSelector((state) => state.inventory.status);
   const store = useSelector((state) => state.auth.store);
-  const role = useSelector((state) => state.auth.role);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -26,12 +25,17 @@ const Inventory = () => {
         console.log(error);
       }
     };
-
     fetchData();
   }, [dispatch]);
+
   if (authenticated) {
     return (
       <div className="flex">
+        {isLoading === "loading" && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-500"></div>
+          </div>
+        )}
         <SidebarNavigation />
         <div className="flex flex-col w-3/4 mx-auto ">
           <div className="flex justify-between items-center  py-3">

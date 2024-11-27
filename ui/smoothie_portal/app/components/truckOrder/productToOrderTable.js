@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { getTruckOrderById } from "../../store/slices/truckOrdersSlice";
 import ProductToOrderTableItem from "./productToOrderTableItem";
 import ProductToOrderPageNavigation from "./productToOrderPageNavigation";
-import next from "next";
 
 const ProductToOrderTable = ({ editable, singleTruckOrderId }) => {
   const [page, setPage] = useState(1);
@@ -129,16 +128,6 @@ const ProductToOrderTable = ({ editable, singleTruckOrderId }) => {
         previousPage={previousPage}
         currentPage={page}
       />
-      {/* <button
-        onClick={nextPage}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Next Page
-      </button> */}
-      {/* <InventoryPageNumber
-        setPageNumber={setPageNumber}
-        currentPage={pageNumber}
-      /> */}
     </div>
   );
 };

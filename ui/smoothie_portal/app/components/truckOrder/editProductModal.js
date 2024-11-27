@@ -20,8 +20,6 @@ const EditProductModal = ({
   neededWeekly,
   units,
 }) => {
-  // still need to add edit slice
-
   const dispatch = useDispatch();
 
   const truckOrderId = useSelector(
@@ -69,7 +67,7 @@ const EditProductModal = ({
       const { count } = data;
       const formData = { count, userId, truckOrderId, productId };
       console.log("submitted data:", formData);
-      // where edit will be added
+
       await dispatch(updateProductToOrder(formData));
       await dispatch(getTruckOrderById({ id: truckOrderId, userId })).then(
         () => {

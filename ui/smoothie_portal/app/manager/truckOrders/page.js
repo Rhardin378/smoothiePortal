@@ -11,7 +11,6 @@ import Unauthorized from "../../components/unauthorized";
 const TruckOrders = () => {
   const authenticated = useSelector((state) => state.auth.authenticated);
   const storeId = useSelector((state) => state.auth.store._id);
-  const truckOrderId = useSelector((state) => state.truckOrders.truckOrderId);
   const isLoading = useSelector((state) => state.truckOrders.status);
   const router = useRouter();
 

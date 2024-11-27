@@ -15,10 +15,8 @@ const EditTruckOrderView = () => {
   const dispatch = useDispatch();
   const authenticated = useSelector((state) => state.auth.authenticated);
   const userId = useSelector((state) => state.auth.userId);
-  const truckOrder = useSelector((state) => state.truckOrders.singleTruckOrder);
-  const { purchaseOrder } = truckOrder || {};
+
   // setup pagination using useState
-  const [productCount, setProductCount] = useState(0);
 
   // console.log("truck Order:", purchaseOrder);
   // console.log("Count:", purchaseOrder.length);
@@ -42,12 +40,6 @@ const EditTruckOrderView = () => {
           </div>
           <div className="flex-col space-x-4 mb-4">
             <ProductToOrderTable editable={false} singleTruckOrderId={id} />
-
-            {/* <Link href={`/manager/truckOrders/`}>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              Back to Truck Orders
-            </button>
-          </Link> */}
           </div>
         </div>
       </div>

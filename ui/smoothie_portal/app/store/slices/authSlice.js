@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { userAgent } from "next/server";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const isServer = typeof window === "undefined";

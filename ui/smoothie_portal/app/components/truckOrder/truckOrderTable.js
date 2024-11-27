@@ -41,7 +41,6 @@ const TruckOrderTable = () => {
       <div className="overflow-x-auto flex mt-4">
         <table className="min-w-full w-2/3 bg-white border border-gray-200">
           <thead>
-            {/* make a UUID function for order # from the id */}
             <tr className="bg-red-600">
               <th className="py-3 px-4 border-b border-gray-200 text-center text-lg font-semibold text-white">
                 Order #

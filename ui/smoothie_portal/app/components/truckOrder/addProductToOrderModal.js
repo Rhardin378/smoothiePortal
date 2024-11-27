@@ -11,7 +11,6 @@ import {
   getTruckOrderById,
 } from "../../store/slices/truckOrdersSlice";
 const AddProductToOrderModal = () => {
-  // FIX SETTING OF STATE FOR SELECT DROP DOWN
   const userStoreId = useSelector((state) => state.auth.store._id);
   const userId = useSelector((state) => state.auth.userId);
   const dispatch = useDispatch();
@@ -19,7 +18,6 @@ const AddProductToOrderModal = () => {
   const [selectedProduct, setSelectedProduct] = useState("");
   const [productId, setProductId] = useState("");
 
-  const productName = selectedProduct.name;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const errorMessage = useSelector((state) => state.inventory.errorMessage);

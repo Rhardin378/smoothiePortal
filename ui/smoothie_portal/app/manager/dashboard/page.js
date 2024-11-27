@@ -26,12 +26,6 @@ const Dashboard = () => {
     (state) => state.truckOrders.truckOrders
   )[0];
   const dispatch = useDispatch();
-  // inventory fetch
-  // filter for
-  // category == dry goods
-  // category == refrigerated goods
-  // category == frozen goods
-  // low stock if stock is lower than half of amount needed weekly
 
   const filterProductsByCategory = (products, category) => {
     return products.filter((product) => product.category == category);

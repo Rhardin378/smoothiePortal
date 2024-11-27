@@ -178,12 +178,26 @@ const inventorySLice = createSlice({
         state.productNameQuery = action.meta.arg.productName || ""; // Update productNameQuery
         state.count = action.payload.count;
       })
+      .addCase(getInventory.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getInventory.rejected, (state, action) => {
+        state.status = "failed";
+        state.errorMessage = action.payload || "Failed to fetch inventory";
+      })
       .addCase(getAllInventory.fulfilled, (state, action) => {
         state.inventory = action.payload.inventory;
         state.status = "succeeded";
         state.count = action.payload.count;
       })
 
+      .addCase(getAllInventory.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getAllInventory.rejected, (state, action) => {
+        state.status = "failed";
+        state.errorMessage = action.payload || "Failed to fetch all inventory";
+      })
       .addCase(addItemToInventory.pending, (state) => {
         state.status = "loading";
       })

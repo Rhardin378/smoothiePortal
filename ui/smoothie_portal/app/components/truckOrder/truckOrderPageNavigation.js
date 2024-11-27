@@ -1,8 +1,6 @@
 "use client";
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-import { getInventory } from "../../store/slices/inventorySlice";
+import { useSelector } from "react-redux";
 
 const TruckOrderPageNavigation = ({ setPageNumber, currentPage }) => {
   const truckOrdersPerPage = 10;

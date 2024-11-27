@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import SidebarNavigation from "../../../../components/SidebarNavigation";
 import UserPanel from "@/app/components/userPanel";
 import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getTruckOrderById } from "../../../../store/slices/truckOrdersSlice";
 import ProductToOrderTable from "../../../../components/truckOrder/productToOrderTable";
