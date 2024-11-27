@@ -61,6 +61,7 @@ const TruckOrderTable = () => {
               return (
                 <TruckOrderTableItem
                   id={truckOrder._id}
+                  key={truckOrder._id}
                   user={truckOrder.user.name}
                   date={truckOrder.date}
                   cases={truckOrder.totalCases}
