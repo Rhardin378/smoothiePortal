@@ -35,7 +35,7 @@ exports.currentUser = async (req, res) => {
 };
 exports.signup = async (req, res, next) => {
   const { email, password, name, store } = req.body;
-  console.log(req.body);
+
   if (!email || !password) {
     return res
       .status(422)

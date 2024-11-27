@@ -1,0 +1,315 @@
+# Query: console.log(
+# ContextLines: 1
+
+79 results - 29 files
+
+backend/server.js:
+  26    .then(() => {
+  27:     console.log("🚀 DB Connected!");
+  28      app.listen(PORT, () => {
+  29:       console.log("😎 Server listening on:", PORT);
+  30      });
+
+  32    .catch((err) => {
+  33:     console.log(`❌ DB Connection Error: ${err.message}`);
+  34    });
+
+backend/controllers/authentication.js:
+  37    const { email, password, name, store } = req.body;
+ 
+  39    if (!email || !password) {
+
+backend/controllers/store.js:
+   15      res.send(store);
+   16:       } catch (err) {
+
+   55      }
+   56:    
+   57    } catch (err) {
+
+  152    try {
+  153:     console.log("put request");
+  154      const storeId = req.params.storeId;
+
+  158  
+  159:     console.log(`storeId: ${storeId}, productId: ${productId}`);
+  160:     console.log("updatedData:", updatedData);
+  161  
+
+backend/controllers/truckOrder.js:
+   37      }
+   38:     console.log("All documents saved");
+   39      return populatedProducts;
+   40    } catch (err) {
+   41:     console.log(err);
+   42      res.status(500).send({ message: "Internal Server Error" });
+
+  185    } catch (err) {
+  186:     console.log(err);
+  187      res.status(500).send({ message: "Internal Server Error" });
+
+  229    } catch (err) {
+  230:     console.log(err);
+  231      res.status(500).send({ message: "Internal Server Error" });
+
+  258    } catch (err) {
+  259:     console.log(err);
+  260      res.status(500).send({ message: "Internal Server Error" });
+
+  277    } catch (err) {
+  278:     console.log(err);
+  279      res.status(500).send({ message: "Internal Server Error" });
+
+ui/smoothie_portal/app/page.js:
+  14    const errorMessage = useSelector((state) => state.auth.errorMessage);
+  15:   console.log(errorMessage);
+  16  
+  17    const authenticated = useSelector((state) => state.auth.authenticated);
+  18:   console.log(authenticated);
+  19    const userSchema = Yup.object().shape({
+
+  34    const validateSignIn = (signInAttempt) => {
+  35:     console.log(signInAttempt.payload);
+  36      if (signInAttempt.payload && signInAttempt.payload.email) {
+
+  44        const result = await dispatch(signin(data));
+  45:       console.log(result.payload);
+  46  
+
+ui/smoothie_portal/app/components/dashboard/GoodsStatus.js:
+   4  const GoodsStatus = ({ products, type }) => {
+   5:   console.log(products);
+   6  
+
+  34      setOutOfStockProducts(outOfStockItems);
+  35:     console.log(lowStockProducts);
+  36:     console.log(outOfStockProducts);
+  37    };
+
+ui/smoothie_portal/app/components/dashboard/inventoryChart.js:
+  33    useEffect(() => {
+  34:     console.log("useEffect triggered");
+  35:     console.log("products:", products);
+  36      if (products) {
+
+ui/smoothie_portal/app/components/dashboard/previousTruckOrderChart.js:
+  23    // -frozen goods: 10
+  24:   console.log("truckorderProp:", truckOrder);
+  25  
+
+  37    useEffect(() => {
+  38:     console.log("useEffect triggered");
+  39:     console.log("truckOrder:", truckOrder);
+  40      if (truckOrder) {
+
+ui/smoothie_portal/app/components/inventory/addItemModal.js:
+  16    const errorMessage = useSelector((state) => state.inventory.errorMessage);
+  17:   console.log(errorMessage);
+  18  
+
+  41        const formData = { storeId, ...data };
+  42:       console.log(formData);
+  43        await dispatch(addItemToInventory(formData));
+
+ui/smoothie_portal/app/components/inventory/deleteItemModal.js:
+  20    const errorMessage = useSelector((state) => state.inventory.errorMessage);
+  21:   console.log(productId);
+  22  
+
+ui/smoothie_portal/app/components/inventory/editItemModal.js:
+  19    const singleProduct = useSelector((state) => state.inventory.singleProduct);
+  20:   console.log(pageNumber);
+  21    const [isModalOpen, setIsModalOpen] = useState(false);
+  22:   console.log("productID:", productId);
+  23  
+
+  34    const errorMessage = useSelector((state) => state.inventory.errorMessage);
+  35:   console.log(errorMessage);
+  36  
+
+  60            await dispatch(getSingleProduct({ storeId, productId }));
+  61:           console.log("useEffect");
+  62          } catch (error) {
+
+  85        const formData = { storeId, productId, ...data };
+  86:       console.log(formData);
+  87        // where edit will be added
+
+ui/smoothie_portal/app/components/inventory/inventoryPageNumber.js:
+  12  
+  13:   console.log(totalPages);
+  14  
+
+ui/smoothie_portal/app/components/inventory/inventoryTable.js:
+  24      if (store && store._id && inventoryChanged) {
+  25:       console.log("working working");
+  26        const fetchInventory = async () => {
+  27          try {
+  28:           console.log(store);
+  29:           console.log("inventory Changed");
+  30            const storeId = store._id;
+
+  35          } catch (error) {
+  36:           console.log(error);
+  37          }
+
+  41      } else if (store && store._id) {
+  42:       console.log("working working");
+  43        const fetchInventory = async () => {
+  44          try {
+  45:           console.log(store);
+  46            const storeId = store._id;
+
+  51          } catch (error) {
+  52:           console.log(error);
+  53          }
+
+ui/smoothie_portal/app/components/inventory/inventoryTableItem.js:
+  17    const date = moment(lastUpdated).format("L");
+  18:   console.log(date);
+  19    return (
+
+ui/smoothie_portal/app/components/truckOrder/addProductToOrderModal.js:
+   50  
+   51:       console.log("inventory fetched");
+   52      }
+
+   58      );
+   59:     console.log("populatedITEM:", populatedItem);
+   60      setSelectedProduct(populatedItem);
+
+   89        };
+   90:       console.log("submitted data:", formData);
+   91        // where edit will be added
+
+  101    const setProduct = (e) => {
+  102:     console.log("setProduct function called");
+  103      const product = e.target.value;
+
+  106  
+  107:     console.log(product);
+  108    };
+
+ui/smoothie_portal/app/components/truckOrder/editProductModal.js:
+  31    const [isModalOpen, setIsModalOpen] = useState(false);
+  32:   console.log("productID:", productId);
+  33  
+
+  68        const formData = { count, userId, truckOrderId, productId };
+  69:       console.log("submitted data:", formData);
+  70  
+
+ui/smoothie_portal/app/components/truckOrder/productToOrderPageNavigation.js:
+  15  
+  16:   console.log(totalPages);
+  17  
+
+ui/smoothie_portal/app/components/truckOrder/productToOrderTable.js:
+   24        );
+   25:       console.log("total Pages:", totalPages);
+   26        const newPage = prevPage + 1;
+
+   62      if (singleTruckOrderId !== "undefined" && userId) {
+   63:       console.log("truckOrderId exists");
+   64        dispatch(getTruckOrderById({ id: singleTruckOrderId, userId: userId }));
+
+  106                currentProducts.map((product) => {
+  107:                 console.log(product);
+  108                  return (
+
+ui/smoothie_portal/app/components/truckOrder/truckOrderPageNavigation.js:
+  10  
+  11:   console.log(totalPages);
+  12  
+
+ui/smoothie_portal/app/components/truckOrder/truckOrderTable.js:
+  15    const truckOrders = useSelector(selectTruckOrdersWithTotalCases);
+  16:   console.log(truckOrders);
+  17    const [pageNumber, setPageNumber] = useState(1);
+
+  21    useEffect(() => {
+  22:     console.log("useEffect is running");
+  23:     console.log("user._id:", userId);
+  24  
+
+  27          const userOrders = userId;
+  28:         console.log("Fetching truck orders for user:", userOrders);
+  29          await dispatch(getAllTruckOrders({ userId, pageNumber }));
+  30        } catch (error) {
+  31:         console.log("Error fetching truck orders:", error);
+  32        }
+
+ui/smoothie_portal/app/components/truckOrder/truckOrderTableItem.js:
+  7    let formattedDate = moment(date).format("L");
+  8:   console.log(date);
+  9    const formattedId = (id) => id.slice(-7).toUpperCase();
+
+ui/smoothie_portal/app/manager/dashboard/page.js:
+  42        } catch (error) {
+  43:         console.log(error);
+  44        }
+
+ui/smoothie_portal/app/manager/inventory/page.js:
+  24        } catch (error) {
+  25:         console.log(error);
+  26        }
+
+ui/smoothie_portal/app/manager/truckOrders/page.js:
+  28        const directTruckOrderId = response.payload.truckOrder._id;
+  29:       console.log("directOrderID:", directTruckOrderId);
+  30  
+
+ui/smoothie_portal/app/manager/truckOrders/[id]/page.js:
+  20  
+  21:   // console.log("truck Order:", purchaseOrder);
+  22:   // console.log("Count:", purchaseOrder.length);
+  23  
+
+ui/smoothie_portal/app/manager/truckOrders/edit/[id]/page.js:
+  27  
+  28:   // console.log("truck Order:", purchaseOrder);
+  29:   // console.log("Count:", purchaseOrder.length);
+  30  
+
+ui/smoothie_portal/app/store/slices/authSlice.js:
+  16      } catch (error) {
+  17:       console.log(error);
+  18        return rejectWithValue(error);
+
+  28  
+  29:       console.log(response, response.data.email);
+  30        !isServer && localStorage.setItem("token", response.data.token);
+
+  47      try {
+  48:       console.log(config);
+  49        const response = await axios.get(`${BASE_URL}/auth/current_user`, config);
+
+ui/smoothie_portal/app/store/slices/inventorySlice.js:
+   32      } catch (error) {
+   33:       console.log(error);
+   34        return rejectWithValue(error.response?.data);
+
+   54      } catch (error) {
+   55:       console.log(error);
+   56        return rejectWithValue(error.response?.data);
+
+  134      } catch (error) {
+  135:       console.log(error);
+  136        return rejectWithValue(error.response.data);
+
+  149        };
+  150:       console.log(id);
+  151  
+
+ui/smoothie_portal/app/store/slices/truckOrdersSlice.js:
+  31      } catch (error) {
+  32:       console.log(error);
+  33        return rejectWithValue(error.response?.data);
+
+  55      } catch (error) {
+  56:       console.log(error);
+  57        return rejectWithValue(error.response?.data);
+
+  80      } catch (error) {
+  81:       console.log(error);
+  82        return rejectWithValue(error.response?.data);

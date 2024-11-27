@@ -13,7 +13,6 @@ exports.createStore = async (req, res, next) => {
 
     await store.save();
     res.send(store);
-    console.log(store);
   } catch (err) {
     console.error(err);
   }
@@ -53,9 +52,7 @@ exports.addProductToInventory = async (req, res, next) => {
 
       res.status(201).send(product);
     }
-    console.log(store);
   } catch (err) {
-    console.error(err);
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
@@ -90,9 +87,7 @@ exports.getInventory = async (req, res, next) => {
       .skip(skip)
       .limit(productsPerPage);
     const totalCount = await Product.countDocuments(query);
-    console.log(category);
-    console.log(productName);
-    console.log(totalCount);
+
     res
       .status(200)
       .send({ inventory: inventory, count: totalCount, page: page });
@@ -152,14 +147,10 @@ exports.getSingleProduct = async (req, res, next) => {
 
 exports.editProduct = async (req, res, next) => {
   try {
-    console.log("put request");
     const storeId = req.params.storeId;
     const productId = req.params.productId;
     const updatedData = req.body;
     updatedData.lastUpdated = new Date();
-
-    console.log(`storeId: ${storeId}, productId: ${productId}`);
-    console.log("updatedData:", updatedData);
 
     const store = await Store.findById(storeId);
 
