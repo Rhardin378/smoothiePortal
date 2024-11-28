@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import moment from "moment";
 import { useState, useEffect } from "react";
@@ -13,7 +14,7 @@ const TruckOrderTracker = ({ day }) => {
     Saturday: 6,
   };
 
-  const [daysUntilOrder, setDaysUntilOrder] = useState(0);
+  const [daysUntilOrder, setDaysUntilOrder] = useState("0");
   const [bgColor, setBgColor] = useState("bg-gray-200");
 
   const getDayInMoment = (day) => {
@@ -21,15 +22,21 @@ const TruckOrderTracker = ({ day }) => {
   };
 
   useEffect(() => {
-    const today = moment().day();
-    const orderDayInMoment = getDayInMoment(day);
-    let daysDifference = orderDayInMoment - today;
+    if (day) {
+      const today = moment().day();
+      const orderDayInMoment = getDayInMoment(day);
+      let daysDifference = orderDayInMoment - today;
 
-    if (daysDifference < 0) {
-      daysDifference += 7; // Adjust for the next week
+      if (daysDifference < 0) {
+        daysDifference += 7; // Adjust for the next week
+      }
+
+      console.log("Today:", today);
+      console.log("Order Day in Moment:", orderDayInMoment);
+      console.log("Days Difference:", daysDifference);
+
+      setDaysUntilOrder(daysDifference);
     }
-
-    setDaysUntilOrder(daysDifference);
   }, [day]);
 
   useEffect(() => {

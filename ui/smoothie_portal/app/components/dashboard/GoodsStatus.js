@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from "react";
 import { useState } from "react";
 
@@ -33,7 +34,9 @@ const GoodsStatus = ({ products, type }) => {
   };
 
   useEffect(() => {
-    countProducts(products);
+    if (products) {
+      countProducts(products);
+    }
   }, [products]);
 
   return (

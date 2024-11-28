@@ -1,7 +1,9 @@
+"use client";
 import React from "react";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 import exportingInit from "highcharts/modules/exporting";
 
 require("highcharts/modules/exporting")(Highcharts);
@@ -12,11 +14,11 @@ if (typeof Highcharts === "object") {
 }
 
 // Dynamically import HighchartsReact to avoid SSR issues
-const HighchartsReact = dynamic(() => import("highcharts-react-official"), {
-  ssr: false,
-});
+// const HighchartsReact = dynamic(() => import("highcharts-react-official"), {
+//   ssr: false,
+// });
 
-const InventoryChart = ({ products }) => {
+const InventoryChart = ({ products = [] }) => {
   const [dryGoods, setDryGoods] = useState(0);
   const [refrigeratedGoods, setRefrigeratedGoods] = useState(0);
   const [frozenGoods, setFrozenGoods] = useState(0);
@@ -112,15 +114,15 @@ const InventoryChart = ({ products }) => {
             name: "Dry Goods",
             sliced: true,
             selected: true,
-            y: dryGoods,
+            y: dryGoods || 0,
           },
           {
             name: "Refrigerated Goods",
-            y: refrigeratedGoods,
+            y: refrigeratedGoods || 0,
           },
           {
             name: "Frozen Goods",
-            y: frozenGoods,
+            y: frozenGoods || 0,
           },
         ],
       },

@@ -1,13 +1,21 @@
 "use client";
+import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import SidebarNavigation from "../../components/SidebarNavigation";
-import UserPanel from "../../components/userPanel";
-import GoodsStatus from "../../components/dashboard/GoodsStatus";
+import UserPanel from "./../../components/userPanel";
+import GoodsStatus from "./../../components/dashboard/GoodsStatus";
 
 import TruckOrderTracker from "../../components/dashboard/truckOrderTracker";
-import PreviousTruckOrderChart from "../../components/dashboard/previousTruckOrderChart";
-import InventoryChart from "../../components/dashboard/inventoryChart";
+const PreviousTruckOrderChart = dynamic(
+  () => import("./../../components/dashboard/previousTruckOrderChart"),
+  { ssr: false }
+);
+const InventoryChart = dynamic(
+  () => import("./../../components/dashboard/inventoryChart"),
+  { ssr: false }
+);
+
 import { fetchUser } from "../../store/slices/authSlice";
 import { getAllInventory } from "../../store/slices/inventorySlice";
 import {

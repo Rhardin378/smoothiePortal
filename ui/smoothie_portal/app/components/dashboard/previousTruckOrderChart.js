@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import dynamic from "next/dynamic";
+import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import exportingInit from "highcharts/modules/exporting";
 import { useState, useEffect } from "react";
@@ -12,11 +14,8 @@ if (typeof Highcharts === "object") {
 }
 
 // Dynamically import HighchartsReact to avoid SSR issues
-const HighchartsReact = dynamic(() => import("highcharts-react-official"), {
-  ssr: false,
-});
 
-const PreviousTruckOrderChart = ({ truckOrder }) => {
+const PreviousTruckOrderChart = ({ truckOrder = { purchaseOrder: [] } }) => {
   // -total products : 100
   // -dry goods: 30
   // -refrigerated goods: 20
@@ -34,7 +33,7 @@ const PreviousTruckOrderChart = ({ truckOrder }) => {
   // useEffect that filters dry / refrigerated / frozen and sets them to the data points
 
   useEffect(() => {
-    if (truckOrder) {
+    if (truckOrder && truckOrder.purchaseOrder) {
       const filterCaseAmounts = () => {
         const dryGoods = filterGoods(truckOrder, "dry");
         const refrigeratedGoods = filterGoods(truckOrder, "refrigerated");
@@ -117,15 +116,15 @@ const PreviousTruckOrderChart = ({ truckOrder }) => {
             name: "Dry Goods",
             sliced: true,
             selected: true,
-            y: dryGoods,
+            y: dryGoods || 0,
           },
           {
             name: "Refrigerated Goods",
-            y: refrigeratedGoods,
+            y: refrigeratedGoods || 0,
           },
           {
             name: "Frozen Goods",
-            y: frozenGoods,
+            y: frozenGoods || 0,
           },
         ],
       },
