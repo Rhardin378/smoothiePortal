@@ -3,10 +3,11 @@ Inventory management system for Smoothie King managers to streamline stock track
 
 ### **Table of Contents**  
 1. [Overview](#overview)  
-2. [Features](#features)  
-3. [Technologies Used](#technologies-used)  
-4. [Installation](#installation)  
-5. [Usage](#usage)  
+2. [Features](#features)
+3. [Security](#security)
+5. [Technologies Used](#technologies-used)  
+6. [Installation](#installation)  
+7. [Usage](#usage)  
 
 ---
 
@@ -18,7 +19,12 @@ Smoothie Portal simplifies inventory management by helping managers track weekly
 - Set and track weekly quantity needs.  
 - Visualize inventory data using pie charts.  
 - Monitor stocked, low-stock, and out-of-stock items.  
-- Track recent truck orders.  
+- Track recent truck orders.
+- Secure User Access: User accounts are created by an admin through the backend, as no public signup route is provided to safeguard store information.
+
+### **Security**
+No Signup Route on Frontend:
+To protect sensitive store information, a signup route is not directly implemented on the frontend. User accounts must be created securely by an administrator through the backend. This ensures only authorized personnel have access to inventory and order data.
 
 ### **Technologies Used**  
 #### **Frontend:**  
