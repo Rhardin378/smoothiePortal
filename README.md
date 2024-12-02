@@ -7,7 +7,8 @@ Inventory management system for Smoothie King managers to streamline stock track
 3. [Security](#security)
 5. [Technologies Used](#technologies-used)  
 6. [Installation](#installation)  
-7. [Usage](#usage)  
+7. [Usage](#usage)
+8. [Contact for Test Access](#contact-for-test-access)
 
 ---
 
@@ -83,8 +84,14 @@ To protect sensitive store information, a signup route is not directly implement
 
 ### **Usage**  
 - Access the dashboard to view inventory levels and order details.  
-- Manage inventory by adding, editing, or deleting products.  
-- Set weekly quantity needs to prepare for truck orders.  
+- Manage inventory by adding, editing, or deleting products.
+- - Set weekly quantity needs to prepare for truck orders.  
 - Use pie charts for a quick visual summary of inventory data.  
+
+### **Contact for Test Access**
+If you’d like to explore the app and its features, please contact me to request credentials for an authorized test user account.
+
+Email: [rhardin378@gmail.com]
+GitHub: github.com/Rhardin378
 
 ---  
