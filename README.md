@@ -41,7 +41,8 @@ To protect sensitive store information, a signup route is not directly implement
 - Moment.js  
 
 #### **Backend:**  
-- Express.js  
+- Node.js
+- Express.js
 - MongoDB  
 - Mongoose  
 - Passport.js  
