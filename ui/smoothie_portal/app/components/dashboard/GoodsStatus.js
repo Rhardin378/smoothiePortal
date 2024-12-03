@@ -19,10 +19,10 @@ const GoodsStatus = ({ products, type }) => {
     let lowStockItems = [];
     let outOfStockItems = [];
     products.forEach((product) => {
-      let quantityShortage = product.neededWeekly - product.inStock;
+      let surplusQuantity = product.neededWeekly - product.inStock;
       let outOfStock = product.inStock === 0;
 
-      if (quantityShortage <= product.neededWeekly / 2) {
+      if (surplusQuantity > 0 && surplusQuantity <= product.neededWeekly / 2) {
         lowStockItems.push(product);
       }
       if (outOfStock) {

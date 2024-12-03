@@ -31,11 +31,6 @@ const Inventory = () => {
   if (authenticated) {
     return (
       <div className="flex">
-        {isLoading === "loading" && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-500"></div>
-          </div>
-        )}
         <SidebarNavigation />
         <div className="flex flex-col w-3/4 mx-auto ">
           <div className="flex justify-between items-center  py-3">
