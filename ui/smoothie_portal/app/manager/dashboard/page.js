@@ -52,7 +52,7 @@ const Dashboard = () => {
       }
     };
     fetchData();
-  }, [dispatch, storeId, userId]);
+  }, [dispatch, storeId, userId, inventory]);
 
   if (authenticated) {
     return (
