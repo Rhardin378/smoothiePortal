@@ -16,6 +16,7 @@ Inventory management system for Smoothie King managers to streamline stock track
 Smoothie Portal simplifies inventory management by helping managers track weekly inventory needs, manage truck orders, and view stock status. The dashboard provides a visual representation of inventory data, including pie charts for stock and order analysis.  
 
 Live Site: https://smoothie-portal.vercel.app/
+
 link to demo video: https://www.youtube.com/watch?v=c4vM8Iw3Wc8
 
 ### **Features**  
