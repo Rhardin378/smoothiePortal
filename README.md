@@ -17,7 +17,7 @@ Smoothie Portal simplifies inventory management by helping managers track weekly
 
 Live Site: https://smoothie-portal.vercel.app/
 
-link to demo video: https://www.youtube.com/watch?v=c4vM8Iw3Wc8
+Demo Video: https://www.youtube.com/watch?v=c4vM8Iw3Wc8
 
 ### **Features**  
 - Add, edit, and delete products.  
