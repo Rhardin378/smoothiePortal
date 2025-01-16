@@ -26,9 +26,10 @@ const PreviousTruckOrderChart = ({ truckOrder = { purchaseOrder: [] } }) => {
   const [frozenGoods, setFrozenGoods] = useState(0);
 
   const filterGoods = (truckOrder, category) => {
-    return truckOrder.purchaseOrder.filter(
+    let filteredGoods = truckOrder.purchaseOrder.filter(
       (product) => product.product.category == category
     );
+    return filteredGoods.reduce((acc, curr) => acc + curr.count || 0, 0);
   };
   // useEffect that filters dry / refrigerated / frozen and sets them to the data points
 
@@ -39,16 +40,16 @@ const PreviousTruckOrderChart = ({ truckOrder = { purchaseOrder: [] } }) => {
         const refrigeratedGoods = filterGoods(truckOrder, "refrigerated");
         const frozenGoods = filterGoods(truckOrder, "frozen");
 
-        setDryGoods(dryGoods.length);
-        setRefrigeratedGoods(refrigeratedGoods.length);
-        setFrozenGoods(frozenGoods.length);
+        setDryGoods(dryGoods);
+        setRefrigeratedGoods(refrigeratedGoods);
+        setFrozenGoods(frozenGoods);
       };
 
       filterCaseAmounts();
     }
   }, [truckOrder]);
 
-  const totalGoods = dryGoods + refrigeratedGoods + frozenGoods;
+  const totalGoods = truckOrder.totalCases;
 
   const options = {
     chart: {

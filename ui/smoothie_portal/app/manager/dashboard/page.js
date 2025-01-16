@@ -30,9 +30,7 @@ const Dashboard = () => {
   const truckOrderDay = useSelector((state) => state.auth.store.truckOrderDay);
   const userId = useSelector((state) => state.auth.userId);
   const inventory = useSelector((state) => state.inventory.inventory);
-  const mostRecentTruckOrder = useSelector(
-    (state) => state.truckOrders.truckOrders
-  )[0];
+  const mostRecentTruckOrder = useSelector(selectTruckOrdersWithTotalCases)[0];
   const dispatch = useDispatch();
 
   const filterProductsByCategory = (products, category) => {
