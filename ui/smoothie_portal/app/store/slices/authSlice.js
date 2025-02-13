@@ -30,7 +30,9 @@ export const signin = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to sign in. Please try again."
+      );
     }
   }
 );
@@ -58,6 +60,7 @@ const authSlice = createSlice({
   initialState: {
     authenticated: !isServer ? localStorage.getItem("token") : "",
     errorMessage: "",
+    status: "idle",
     userId: null,
     email: null,
     name: null,
@@ -66,6 +69,10 @@ const authSlice = createSlice({
     truckOrders: null,
   },
   reducers: {
+    resetAuth: (state) => {
+      state.status = "idle";
+      state.errorMessage = null;
+    },
     signout: (state) => {
       !isServer && localStorage.removeItem("token");
       state.authenticated = "";
@@ -89,9 +96,14 @@ const authSlice = createSlice({
       .addCase(signin.fulfilled, (state, action) => {
         state.authenticated = action.payload.token;
         state.email = action.payload.email || null;
+        state.status = "success";
+      })
+      .addCase(signin.pending, (state, action) => {
+        state.status = "loading";
       })
       .addCase(signin.rejected, (state, action) => {
         state.errorMessage = action.payload;
+        state.status = "idle";
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.authenticated = action.payload.token;
@@ -105,5 +117,6 @@ const authSlice = createSlice({
 });
 
 export const { signout } = authSlice.actions;
+export const { resetAuth } = authSlice.actions;
 
 export default authSlice.reducer;
