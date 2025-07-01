@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import { Button } from "./components/atoms/Button";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
@@ -119,20 +120,14 @@ export default function Home() {
               </p>
             )}
           </div>
-
-          <button
-            disabled={isLoading}
+          <Button
             type="submit"
-            className={`w-full bg-red-600 text-white font-bold py-3 px-4 rounded-md 
-              ${
-                isLoading
-                  ? "opacity-50 cursor-not-allowed"
-                  : "hover:bg-red-700 focus:bg-red-700"
-              }
-              focus:outline-none`}
+            variant="primary"
+            disabled={isLoading}
+            className="w-full"
           >
             {isLoading ? "Signing In..." : "Sign In"}
-          </button>
+          </Button>
         </form>
       </div>
     </div>
