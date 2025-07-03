@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": "./", // Base directory for the alias
+
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./app/*"] // Map @ to the app directory
     }
   }
 }
