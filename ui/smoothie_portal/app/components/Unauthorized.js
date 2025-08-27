@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
-const Unauthorized = () => {
+export const Unauthorized = () => {
   const router = useRouter();
   const handleLoginRedirect = () => {
     router.push("/");
@@ -20,5 +20,3 @@ const Unauthorized = () => {
     </div>
   );
 };
-
-export default Unauthorized;

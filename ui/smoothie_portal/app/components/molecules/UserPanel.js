@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUser } from "../store/slices/authSlice";
-const UserPanel = () => {
+import { fetchUser } from "../../store/slices/authSlice";
+export const UserPanel = () => {
   const name = useSelector((state) => state.auth.name);
   const role = useSelector((state) => state.auth.role);
   const dispatch = useDispatch();
@@ -15,5 +15,3 @@ const UserPanel = () => {
     </div>
   );
 };
-
-export default UserPanel;

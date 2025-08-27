@@ -1,61 +1,48 @@
+// app/manager/inventory/page.js
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
-import { fetchUser, signout } from "../../store/slices/authSlice";
-import SidebarNavigation from "../../components/SidebarNavigation";
-import InventorySearchBar from "../../components/inventory/inventorySearch";
-import UserPanel from "../../components/userPanel";
-import InventoryTable from "../../components/inventory/inventoryTable";
-import AddItemModal from "../../components/inventory/addItemModal";
-import Unauthorized from "../../components/unauthorized";
+import { fetchUser } from "@/store/slices/authSlice";
+import { InventoryTemplate } from "@/components/templates/InventoryTemplate";
+import { InventoryTable } from "@/components/containers/inventory/InventoryTable";
+import { AddItemModal } from "@/components/organisms/addItemModal";
+import { SidebarNavigation } from "@/components/SidebarNavigation";
+import { Unauthorized } from "@/components/Unauthorized";
 
 const Inventory = () => {
-  const dispatch = useDispatch();
-  const authenticated = useSelector((state) => state.auth.authenticated);
-  const isLoading = useSelector((state) => state.inventory.status);
-  const store = useSelector((state) => state.auth.store);
   const [searchTerm, setSearchTerm] = useState("");
+  const { authenticated, store } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         await dispatch(fetchUser());
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     fetchData();
   }, [dispatch]);
 
-  if (authenticated) {
-    return (
-      <div className="flex">
-        <SidebarNavigation />
-        <div className="flex flex-col w-3/4 mx-auto ">
-          <div className="flex justify-between items-center  py-3">
-            <InventorySearchBar
-              storeId={store._id}
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-            />
-            <UserPanel />
-          </div>
-          <div className="text-3xl   py-2 font-mono font-bold">Inventory</div>
-          <div className="flex items-center   py-2">
-            <AddItemModal store={store} />
-          </div>
-          <InventoryTable
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            store={store}
-          />
-        </div>
-      </div>
-    );
-  } else {
+  if (!authenticated) {
     return <Unauthorized />;
   }
+
+  return (
+    <div className="flex h-screen bg-gray-50">
+      <SidebarNavigation />
+      <main className="flex-1">
+        <InventoryTemplate
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          store={store}
+          addItemModal={AddItemModal}
+          tableComponent={InventoryTable}
+        />
+      </main>
+    </div>
+  );
 };
 
 export default Inventory;

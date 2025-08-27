@@ -1,38 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
-import {
-  editInventoryItem,
-  getInventory,
-  getSingleProduct,
-} from "../../store/slices/inventorySlice";
-import store from "@/app/store/configureStore";
+import { addItemToInventory } from "../../store/slices/inventorySlice";
+import { Button } from "../atoms/Button";
 
-const EditItemModal = ({ productId, pageNumber, currentPage }) => {
-  // still need to add edit slice
-
-  const dispatch = useDispatch();
-  const singleProduct = useSelector((state) => state.inventory.singleProduct);
-
+export const AddItemModal = ({ store }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    category: "",
-    neededWeekly: 0,
-    inStock: 0,
-    units: "",
-  });
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   const errorMessage = useSelector((state) => state.inventory.errorMessage);
 
-  const storeId = useSelector((state) => state.auth.store._id);
+  const storeId = store._id;
 
   const productSchema = Yup.object().shape({
     name: Yup.string().required(),
@@ -45,46 +29,18 @@ const EditItemModal = ({ productId, pageNumber, currentPage }) => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(productSchema),
   });
 
-  useEffect(() => {
-    if (isModalOpen) {
-      const fetchSingleProduct = async () => {
-        try {
-          await dispatch(getSingleProduct({ storeId, productId }));
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      fetchSingleProduct();
-    }
-  }, [dispatch, isModalOpen, productId]);
-
-  useEffect(() => {
-    if (singleProduct) {
-      reset({
-        name: singleProduct.name || "",
-        category: singleProduct.category || "",
-        neededWeekly: singleProduct.neededWeekly || 0,
-        inStock: singleProduct.inStock || "",
-        units: singleProduct.units || "",
-        // Populate other fields as needed
-      });
-    }
-  }, [singleProduct]);
+  const dispatch = useDispatch();
 
   const onSubmit = async (data) => {
     try {
-      const formData = { storeId, productId, ...data };
-      // where edit will be added
-      await dispatch(editInventoryItem(formData));
-      await dispatch(getInventory({ storeId, pageNumber })).then(() =>
-        closeModal()
-      );
+      const formData = { storeId, ...data };
+      await dispatch(addItemToInventory(formData));
+      closeModal();
     } catch (error) {
       console.error(error);
     }
@@ -92,12 +48,13 @@ const EditItemModal = ({ productId, pageNumber, currentPage }) => {
 
   return (
     <>
-      <button
+      <Button
         onClick={openModal}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+        className="flex items-center hover:bg-red-600 hover:text-white"
       >
-        Edit
-      </button>
+        <span className="text-2xl mr-2">&#x2b;</span>
+        Add New Item
+      </Button>
 
       {isModalOpen && (
         <div
@@ -107,16 +64,16 @@ const EditItemModal = ({ productId, pageNumber, currentPage }) => {
           aria-hidden="true"
           className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10"
         >
-          <div className="relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700">
+          <div className="relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700 z-60">
             {/* Modal header */}
             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
               <h3 className="text-center text-xl font-bold text-red-900 mb-4">
-                Edit Product
+                New Product
               </h3>
-              <button
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              <Button
                 onClick={closeModal}
+                variant="ghost"
+                className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8"
               >
                 <svg
                   className="w-3 h-3"
@@ -134,7 +91,7 @@ const EditItemModal = ({ productId, pageNumber, currentPage }) => {
                   />
                 </svg>
                 <span className="sr-only">Close modal</span>
-              </button>
+              </Button>
             </div>
             {/* Modal body */}
             <div className="p-4 md:p-5 space-y-4">
@@ -164,11 +121,12 @@ const EditItemModal = ({ productId, pageNumber, currentPage }) => {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   {...register("category", { required: true })}
                 >
+                  {errors.category?.message}
                   <option value="frozen">Frozen</option>
                   <option value="refrigerated">Refrigerated</option>
                   <option value="dry">Dry</option>
                 </select>
-                {errors.cetegory?.message}
+
                 <label htmlFor="neededWeekly">Needed Weekly</label>
                 <input
                   type="text"
@@ -181,7 +139,6 @@ const EditItemModal = ({ productId, pageNumber, currentPage }) => {
                       value: /^\d*\.?\d+$/,
                       message: "Please enter a valid number",
                     },
-                    setValueAs: (value) => parseFloat(value), // Parse the value as a float
                   })}
                 />
                 {errors.neededWeekly?.message}
@@ -198,11 +155,9 @@ const EditItemModal = ({ productId, pageNumber, currentPage }) => {
                       value: /^\d*\.?\d+$/,
                       message: "Please enter a valid number",
                     },
-                    setValueAs: (value) => parseFloat(value), // Parse the value as a float
                   })}
                 />
                 {errors.inStock?.message}
-
                 <label htmlFor="units">Units</label>
                 <input
                   type="text"
@@ -214,19 +169,20 @@ const EditItemModal = ({ productId, pageNumber, currentPage }) => {
                 {errors.units?.message}
                 {/* Modal footer */}
                 <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                  <button
+                  <Button
                     type="submit"
-                    className="text-white bg-red-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-green-800 dark:focus:ring-blue-800"
+                    variant="primary"
+                    className="bg-red-600 hover:bg-green-800"
                   >
                     Save Product
-                  </button>
-                  <button
-                    type="button"
-                    className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                  </Button>
+                  <Button
                     onClick={closeModal}
+                    variant="secondary"
+                    className="ms-3"
                   >
                     Cancel
-                  </button>
+                  </Button>
                 </div>
               </form>
             </div>
@@ -236,5 +192,3 @@ const EditItemModal = ({ productId, pageNumber, currentPage }) => {
     </>
   );
 };
-
-export default EditItemModal;

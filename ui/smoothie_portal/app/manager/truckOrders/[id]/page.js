@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import SidebarNavigation from "../../../components/SidebarNavigation";
-import UserPanel from "@/app/components/userPanel";
+import { SidebarNavigation } from "@/components/SidebarNavigation";
+import { UserPanel } from "@/components/molecules/UserPanel";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getTruckOrderById } from "../../../store/slices/truckOrdersSlice";
-import ProductToOrderTable from "../../../components/truckOrder/productToOrderTable";
+import { getTruckOrderById } from "@/store/slices/truckOrdersSlice";
+import ProductToOrderTable from "@/components/truckOrder/productToOrderTable";
 import Link from "next/link";
-import Unauthorized from "../../../components/unauthorized";
+import { Unauthorized } from "@/components/Unauthorized";
 
 const EditTruckOrderView = () => {
   const { id } = useParams();

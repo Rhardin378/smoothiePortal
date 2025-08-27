@@ -2,11 +2,11 @@
 import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import SidebarNavigation from "../../components/SidebarNavigation";
-import UserPanel from "./../../components/userPanel";
-import GoodsStatus from "./../../components/dashboard/GoodsStatus";
+import { SidebarNavigation } from "@/components/SidebarNavigation";
+import { UserPanel } from "@/components/molecules/UserPanel";
+import GoodsStatus from "@/components/dashboard/GoodsStatus";
 
-import TruckOrderTracker from "../../components/dashboard/truckOrderTracker";
+import TruckOrderTracker from "@/components/dashboard/truckOrderTracker";
 const PreviousTruckOrderChart = dynamic(
   () => import("./../../components/dashboard/previousTruckOrderChart"),
   { ssr: false }
@@ -22,7 +22,7 @@ import {
   getAllTruckOrders,
   selectTruckOrdersWithTotalCases,
 } from "../../store/slices/truckOrdersSlice";
-import Unauthorized from "../../components/unauthorized";
+import Unauthorized from "../../components/Unauthorized";
 
 const Dashboard = () => {
   const authenticated = useSelector((state) => state.auth.authenticated);

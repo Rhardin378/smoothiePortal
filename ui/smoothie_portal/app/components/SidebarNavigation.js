@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,7 +13,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 
-const SidebarNavigation = () => {
+export const SidebarNavigation = () => {
   const dispatch = useDispatch();
   const authenticated = useSelector((state) => state.auth.authenticated);
   const store = useSelector((state) => state.auth.store);
@@ -125,5 +126,3 @@ const SidebarNavigation = () => {
     </div>
   );
 };
-
-export default SidebarNavigation;

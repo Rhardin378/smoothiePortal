@@ -10,7 +10,7 @@ import {
   getTruckOrderById,
   updateProductToOrder,
 } from "../../store/slices/truckOrdersSlice";
-import store from "@/app/store/configureStore";
+import store from "@/store/configureStore";
 
 const EditProductModal = ({
   productId,

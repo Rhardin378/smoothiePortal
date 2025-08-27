@@ -9,6 +9,7 @@ import { signin, resetAuth } from "@/store/slices/authSlice";
 import { FormField } from "@/components/molecules/FormField";
 import { Button } from "@/components/atoms/Button";
 import { Card } from "@/components/atoms/Card";
+import { useColors } from "@/hooks/useColors";
 
 const userSchema = Yup.object().shape({
   email: Yup.string().email().required("Please enter a valid email"),
@@ -16,6 +17,7 @@ const userSchema = Yup.object().shape({
 });
 
 export const LoginForm = () => {
+  const { getTailwindClasses } = useColors();
   const status = useSelector((state) => state.auth.status);
   const errorMessage = useSelector((state) => state.auth.errorMessage);
 
@@ -53,7 +55,7 @@ export const LoginForm = () => {
   const isLoading = status === "loading";
 
   return (
-    <Card className="max-w-md w-full bg-gradient-to-br from-yellow-300 to-yellow-400 shadow-2xl rounded-2xl p-8">
+    <Card className={`max-w-md w-full ${getTailwindClasses.card.primary} p-8`}>
       {/* Logo Container */}
       <div className="flex justify-center mb-8">
         <img
@@ -70,7 +72,7 @@ export const LoginForm = () => {
 
       {/* Error Message */}
       {errorMessage && (
-        <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-r">
+        <div className={`mb-6 p-4 ${getTailwindClasses.errorMessage}`}>
           <p className="text-sm">{errorMessage}</p>
         </div>
       )}
@@ -97,8 +99,7 @@ export const LoginForm = () => {
             type: "email",
             placeholder: "you@example.com",
             disabled: isLoading,
-            className:
-              "w-full px-4 py-3 rounded-lg bg-white/80 backdrop-blur-sm border border-yellow-500/20 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 transition-all duration-200",
+            className: getTailwindClasses.input.base,
           }}
           register={register}
         />
@@ -123,7 +124,7 @@ export const LoginForm = () => {
           type="submit"
           variant="primary"
           disabled={isLoading}
-          className="w-full py-3 bg-red-900 hover:bg-red-800 text-white rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+          className={`w-full py-3 ${getTailwindClasses.button.primary}`}
         >
           {isLoading ? (
             <div className="flex items-center justify-center">

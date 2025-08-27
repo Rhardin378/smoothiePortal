@@ -2,15 +2,15 @@
 import React from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
-import SidebarNavigation from "../../../../components/SidebarNavigation";
-import UserPanel from "@/app/components/userPanel";
+import { SidebarNavigation } from "@/components/SidebarNavigation";
+import { UserPanel } from "@/components/molecules/UserPanel";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getTruckOrderById } from "../../../../store/slices/truckOrdersSlice";
-import ProductToOrderTable from "../../../../components/truckOrder/productToOrderTable";
-import AddProductToOrderModal from "../../../../components/truckOrder/addProductToOrderModal";
-import Unauthorized from "../../../../components/unauthorized";
-import { fetchUser } from "../../../../store/slices/authSlice";
+import { getTruckOrderById } from "@/store/slices/truckOrdersSlice";
+import ProductToOrderTable from "@/components/truckOrder/productToOrderTable";
+import AddProductToOrderModal from "@/components/truckOrder/addProductToOrderModal";
+import { Unauthorized } from "@/components/Unauthorized";
+import { fetchUser } from "@/store/slices/authSlice";
 
 const EditTruckOrderView = () => {
   const { id } = useParams();

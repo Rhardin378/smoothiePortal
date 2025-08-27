@@ -2,7 +2,7 @@
 import React from "react";
 import moment from "moment";
 import EditProductModal from "./editProductModal";
-import DeleteItemModal from "../inventory/deleteItemModal";
+import DeleteItemModal from "../organisms/deleteItemModal";
 
 const ProductToOrderTableItem = ({
   editable,

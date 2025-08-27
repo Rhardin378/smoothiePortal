@@ -2,11 +2,11 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import SidebarNavigation from "../../components/SidebarNavigation";
-import UserPanel from "../../components/userPanel";
-import TruckOrderTable from "../../components/truckOrder/truckOrderTable";
-import { createTruckOrder } from "../../store/slices/truckOrdersSlice";
-import Unauthorized from "../../components/unauthorized";
+import { SidebarNavigation } from "@/components/SidebarNavigation";
+import { UserPanel } from "@/components/molecules/UserPanel";
+import TruckOrderTable from "@/components/truckOrder/truckOrderTable";
+import { createTruckOrder } from "@/store/slices/truckOrdersSlice";
+import { Unauthorized } from "@/components/Unauthorized";
 
 const TruckOrders = () => {
   const authenticated = useSelector((state) => state.auth.authenticated);
